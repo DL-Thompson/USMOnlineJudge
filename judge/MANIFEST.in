@@ -1,0 +1,2 @@
+recursive-include judge/templates *
+recursive-include judge/static *
