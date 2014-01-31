@@ -37,3 +37,7 @@ nosetests.xml
 
 #virtual environment folder
 venv*
+env*
+
+#fabric info
+fabfile.*
