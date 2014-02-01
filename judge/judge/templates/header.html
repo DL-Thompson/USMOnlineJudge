@@ -1,0 +1,15 @@
+<header>
+    <h2>
+        <div id="site_links" style="float:left">
+            <a href="{{ url_for('index') }}">Home</a>  |
+            <a href="{{ url_for('exercises') }}">Exercises</a>
+        </div>
+
+        <div  id="user_links" style="float:right">
+            <!--Profile/Statistics only displayed if user is logged in.-->
+            <a href="{{ url_for('profile') }}">Profile</a>  |
+            <a href="{{ url_for('statistics')}}">Statistics</a>  |
+            <a href="{{ url_for('login') }}">Login/Logout</a>
+        </div>
+    </h2>
+</header>

@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>USM Online Judge</title>
+    </head>
+
+    <body>
+
+        <div id="header">
+            {% include 'header.html' %}
+            <br>
+            <hr>
+        </div>
+
+        <div id="content" style="text-align:center">
+            <br>
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div id="footer">
+            <br>
+            <hr>
+            {% include 'footer.html' %}
+        </div>
+    </body>
+</html>
