@@ -41,3 +41,10 @@ env*
 
 #fabric info
 fabfile.*
+
+#pycharm
+.idea/*
+
+#misc
+prod_cfg.py
+*.*~
