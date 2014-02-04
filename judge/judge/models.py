@@ -2,11 +2,19 @@ from judge import app
 from flask.ext.sqlalchemy import SQLAlchemy
 
 import prod_cfg
+import dev_cfg
 
-usr = prod_cfg.user
-pw = prod_cfg.password
-server = prod_cfg.server
-db_name = prod_cfg.db_name
+production_env = True
+if production_env:
+    usr = prod_cfg.user
+    pw = prod_cfg.password
+    server = prod_cfg.server
+    db_name = prod_cfg.db_name
+else:
+    usr = dev_cfg.user
+    pw = dev_cfg.password
+    server = dev_cfg.server
+    db_name = dev_cfg.db_name
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (usr, pw, server, db_name)
 db = SQLAlchemy(app)
