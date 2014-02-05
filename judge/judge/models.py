@@ -1,31 +1,14 @@
 from judge import app
-from flask.ext.sqlalchemy import SQLAlchemy
-
-import prod_cfg
-import dev_cfg
-
-production_env = True
-if production_env:
-    usr = prod_cfg.user
-    pw = prod_cfg.password
-    server = prod_cfg.server
-    db_name = prod_cfg.db_name
-else:
-    usr = dev_cfg.user
-    pw = dev_cfg.password
-    server = dev_cfg.server
-    db_name = dev_cfg.db_name
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (usr, pw, server, db_name)
-db = SQLAlchemy(app)
+from database import Base
+from sqlalchemy import Column, Integer, String, Text
 
 
-class PageContent(db.Model):
+class PageContent(Base):
     __tablename__ = 'PageContent'
 
-    id = db.Column("ID", db.Integer, primary_key=True)
-    page = db.Column("PAGE", db.String(60))
-    content = db.Column("CONTENT", db.Text)
+    id = Column("ID", Integer, primary_key=True)
+    page = Column("PAGE", String(60))
+    content = Column("CONTENT", Text)
 
     def __init__(self, page, content):
         self.page = page
@@ -36,3 +19,22 @@ class PageContent(db.Model):
 
     def get_content(self):
         return self.content
+
+
+class Exercises(Base):
+    __tablename__ = 'Exercises'
+
+    id = Column("ID", Integer, primary_key=True)
+    title = Column("TITLE", String(60))
+    difficulty = Column("DIFFICULTY", Integer)
+    category = Column("CATEGORY", String(20))
+    content = Column("CONTENT", Text)
+
+    def __init__(self, title, difficulty, category, content):
+        self.title = title
+        self.difficulty = difficulty
+        self.category = category
+        self.content = content
+
+    def __repr__(self):
+        return '<Exercises %r>' % self.title

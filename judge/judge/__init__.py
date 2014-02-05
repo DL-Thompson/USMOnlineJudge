@@ -2,14 +2,16 @@
 from flask import Flask
 app = Flask(__name__)
 
-# db initialization
-import judge.models
-from models import db
-db.init_app(app)
-'''
-# cache initialization
-from flask.ext.cache import Cache
-cache = Cache(app)
-'''
 # views initialization
-import judge.views
+import views
+
+#db session closing
+from database import db_session
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
+
+
+#secret key
+import prod_cfg
+app.secret_key = prod_cfg.secret_key

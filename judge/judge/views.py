@@ -1,13 +1,23 @@
 from judge import app
 from flask import render_template
+from flask import request
+from flask import redirect
+from flask import url_for
 import models
 import queries
+import forms
+from database import db_session
 
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template("hello.html", name=name)
+@app.route('/db-add-exercise', methods=['GET', 'POST'])
+def db_add_exercise():
+    form = forms.DBExerciseUploadForm(request.form)
+    if request.method == 'POST' and form.validate():
+        exercise = models.Exercises(form.title.data, form.difficulty.data, form.category.data, form.content.data)
+        db_session.add(exercise)
+        db_session.commit()
+        return redirect(url_for('db_add_exercise'))
+    return render_template('_db_add_exercises.html', form=form)
 
 
 @app.route('/')
