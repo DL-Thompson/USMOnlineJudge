@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 # views initialization
 import views
+import views_admin
 
 #db session closing
 from database import db_session

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Administrator Settings</h2>
+<a href="{{ url_for('db_admin_exercise') }}">Add/Edit Exercises</a> <br>
+<a href="{{ url_for('db_admin_page') }}">Add/Edit Pages</a>
+
+{% endblock %}

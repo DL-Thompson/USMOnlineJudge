@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% from "_formhelpers.html" import render_field %}
+<form method=post>
+  <dl>
+    {{ render_field(form.title) }}
+    <!-- textarea won't take the cols & rows arguments with render_field-->
+    {{ form.content.label }}
+    <br>
+    {{ form.content(cols="100", rows="30") }}
+
+  </dl>
+  <p><input type=submit>
+
+</form>
+
+  <div id="message">
+    {% if msg %}
+        <p>{{ msg }}</p>
+    {% endif %}
+  </div>
+
+
+{% endblock %}

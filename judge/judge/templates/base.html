@@ -16,7 +16,7 @@
                 <div id="page_description">
                     <p>
                     {% if text %}
-                        {{text}}
+                        {{ text | safe }}
                     {% endif %}
                     </p>
                 </div>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="admin-page-list">
+    {% if pages %}
+
+        {% for p in pages %}
+            <a href="{{ url_for('db_edit_page', pg_id=p.id) }}">{{ p.page }}</a>
+            <br>
+        {% endfor %}
+
+    {% else %}
+
+        No pages in db
+
+    {% endif %}
+</div>
+
+{% endblock %}

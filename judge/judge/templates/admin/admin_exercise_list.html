@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="admin-exercise-list">
+    {% if exercises %}
+
+        {% for e in exercises %}
+            <a href="{{ url_for('db_edit_exercise', ex_id=e.id) }}">{{ e.title }}</a>
+            <br>
+        {% endfor %}
+
+    {% else %}
+
+        No exercises in db
+
+    {% endif %}
+</div>
+
+{% endblock %}

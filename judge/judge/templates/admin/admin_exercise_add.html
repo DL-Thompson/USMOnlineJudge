@@ -8,7 +8,10 @@
     {{ render_field(form.title) }}
     {{ render_field(form.difficulty) }}
     {{ render_field(form.category) }}
-    {{ render_field(form.content) }}
+    <!-- textarea won't take the cols & rows arguments with render_field-->
+    {{ form.content.label }}
+    <br>
+    {{ form.content(cols="100", rows="30") }}
   </dl>
   <p><input type=submit>
 </form>
