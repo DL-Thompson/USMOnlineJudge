@@ -38,3 +38,25 @@ class Exercises(Base):
 
     def __repr__(self):
         return '<Exercises %r>' % self.title
+
+
+class User(Base):
+    __tablename__ = "User"
+    email = Column(String(120), primary_key=True)
+    first_name = Column(String(64))
+    last_name = Column(String(64))
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.email)
+
+    def __repr__(self):
+        return '<Login: %r>' % (self.email)

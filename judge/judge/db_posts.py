@@ -28,3 +28,10 @@ def add_page(p):
         db_session.commit()
     app_cache.reset_page_list()
     app_cache.reset_page(pg.id)
+
+
+def add_user(email, first_name, last_name):
+    user = models.User(email=email, first_name=first_name, last_name=last_name)
+    db_session.add(user)
+    db_session.commit()
+    return user

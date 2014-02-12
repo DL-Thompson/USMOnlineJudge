@@ -56,3 +56,8 @@ def get_exercise(ex_id):
             val = ERROR_DB_MSG
         cache.set(key, val, timeout=TIMEOUT)
     return val
+
+
+def get_user(email):
+    user = models.User.query.filter_by(email=email).first()
+    return user
