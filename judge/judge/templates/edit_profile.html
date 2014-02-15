@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form action="" method="post" name="change_profile">
+        {#Cross Site Forgery Protection#}
+
+        <p>
+            Make Profile Public: {{form.show_public}} <br>
+            Name: {{form.full_name(size=50, value=profile.full_name)}}<br>
+            Public Email: {{form.public_email(size=50, value=profile.public_email)}}<br>
+            Location: {{form.location(size=50, value=profile.location)}}<br>
+            Homepage: {{form.homepage(size=50, value=profile.homepage)}}<br>
+            Company: {{form.company(size=50, value=profile.company)}}<br>
+            School: {{form.school(size=50, value=profile.school)}}<br>
+
+        </p>
+
+    </form>
+
+{% endblock %}

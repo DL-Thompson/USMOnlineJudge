@@ -81,6 +81,12 @@ class Profile(Base):
         self.show_public = False
         self.join_date = datetime.utcnow()
         self.user_id = user.user_id
+        self.full_name = ""
+        self.public_email = ""
+        self.homepage = ""
+        self.company = ""
+        self.school = ""
+        self.location = ""
 
     def __repr__(self):
         return '<profile_id: %r> \n <show_public: %r> \n <full_name: %r> \n <public_email: %r> \n <homepage: %r> \n <company: %r> \n <school: %r> \n <location: %r> \n' \

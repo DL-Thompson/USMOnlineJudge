@@ -62,3 +62,9 @@ def get_user(primary_email):
     user = models.User.query.filter_by(primary_email=primary_email).first()
     return user
 
+
+def get_profile(primary_email):
+    user = models.User.query.filter_by(primary_email=primary_email).first()
+    profile =  models.Profile.query.get(user.user_id)
+    return profile
+

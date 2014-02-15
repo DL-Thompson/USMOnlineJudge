@@ -12,6 +12,9 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from authomatic.adapters import WerkzeugAdapter
 import db_posts
 
+#imports for profile
+from forms import ProfileForm
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -58,5 +61,11 @@ def statistics():
 @login_required
 def profile():
     text = db_queries.get_page_content('profile')
-    profile = db_queries.get_profile(current_user.primary_email)
     return render_template("profile.html", text=text, profile=profile)
+
+@app.route('/edit_profile')
+@login_required
+def edit_profile():
+    form = ProfileForm()
+    profile = db_queries.get_profile(current_user.primary_email)
+    return render_template('edit_profile.html', form=form, profile=profile)
