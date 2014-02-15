@@ -26,3 +26,4 @@ authomatic = Authomatic(log_cfg, login_secret_key, report_errors=False)
 # views initialization
 import views
 import views_admin
+import views_login

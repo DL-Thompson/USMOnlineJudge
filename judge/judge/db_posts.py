@@ -30,8 +30,13 @@ def add_page(p):
     app_cache.reset_page(pg.id)
 
 
-def add_user(email, first_name, last_name):
-    user = models.User(email=email, first_name=first_name, last_name=last_name)
+def add_user(primary_email):
+    #creates a new user with a blank profile
+    user = models.User(primary_email=primary_email)
     db_session.add(user)
     db_session.commit()
+    profile = models.Profile(user)
+    db_session.add(profile)
+    db_session.commit()
     return user
+

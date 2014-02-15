@@ -58,6 +58,7 @@ def get_exercise(ex_id):
     return val
 
 
-def get_user(email):
-    user = models.User.query.filter_by(email=email).first()
+def get_user(primary_email):
+    user = models.User.query.filter_by(primary_email=primary_email).first()
     return user
+
