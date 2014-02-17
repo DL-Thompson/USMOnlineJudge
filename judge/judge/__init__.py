@@ -2,12 +2,22 @@
 from flask import Flask
 app = Flask(__name__)
 
+
 #db session closing
 from database import db_session
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
 
+#db migration
+'''
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+migrate = Migrate(app, db_session)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+'''
 
 #secret key
 import prod_cfg

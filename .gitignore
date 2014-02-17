@@ -48,4 +48,5 @@ fabfile.*
 #misc
 prod_cfg.py
 dev_cfg.py
+login_cfg.py
 *.*~
