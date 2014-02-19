@@ -1,6 +1,7 @@
 # app initialization
 from flask import Flask
 app = Flask(__name__)
+app.config['csrf_enabled'] = False #enable CSRF later
 
 #db session closing
 from database import db_session

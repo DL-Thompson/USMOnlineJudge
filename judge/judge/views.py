@@ -12,8 +12,10 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from authomatic.adapters import WerkzeugAdapter
 import db_posts
 
+
 #imports for profile
 from forms import ProfileForm
+from app_cache import is_profile_changed
 
 @app.route('/')
 @app.route('/index')
@@ -48,8 +50,6 @@ def before_request():
     g.user = current_user
 
 
-
-
 @app.route('/statistics')
 @login_required
 def statistics():
@@ -57,15 +57,26 @@ def statistics():
     return render_template("statistics.html", text=text)
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     text = db_queries.get_page_content('profile')
-    return render_template("profile.html", text=text, profile=profile)
+    if request.method == 'POST':
+        #if the submit button was hit, loads the information into the form
+        form = ProfileForm(request.form)
+        if form.validate():
+            #sends the user to the profile/edit profile page with updated information
+            if is_profile_changed(form):
+                #user profile has been changed, update the database
+                db_posts.update_profile(form, current_user.primary_email)
+            text = db_queries.get_page_content('profile')
+            profile = db_queries.get_profile(current_user.primary_email)
+            return render_template("profile.html", text=text, profile=profile, form=form)
+        else:
+            profile = db_queries.get_profile(current_user.primary_email)
+            return render_template("profile.html", text=text, profile=profile, form=form)
 
-@app.route('/edit_profile')
-@login_required
-def edit_profile():
-    form = ProfileForm()
+    #sends the user to the profile/edit profile page for GET methods
     profile = db_queries.get_profile(current_user.primary_email)
-    return render_template('edit_profile.html', form=form, profile=profile)
+    form = ProfileForm(obj=profile)
+    return render_template("profile.html", text=text, profile=profile, form=form)

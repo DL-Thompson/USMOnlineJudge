@@ -1,5 +1,5 @@
 import models
-from app_cache import cache, TIMEOUT, ERROR_DB_MSG, KEY_PAGE, KEY_PAGES, KEY_EXERCISE, KEY_EXERCISES
+from app_cache import cache, TIMEOUT, ERROR_DB_MSG, KEY_PAGE, KEY_PAGES, KEY_EXERCISE, KEY_EXERCISES, KEY_PROFILE
 
 
 def get_page_content(page_title):
@@ -64,7 +64,15 @@ def get_user(primary_email):
 
 
 def get_profile(primary_email):
-    user = models.User.query.filter_by(primary_email=primary_email).first()
-    profile =  models.Profile.query.get(user.user_id)
-    return profile
+    #retrieves and stores the user profile in the cache so the database
+    #doesn't need to be queried
+    key = KEY_PROFILE
+    val = cache.get(key)
+    if val is None:
+        user = models.User.query.filter_by(primary_email=primary_email).first()
+        val =  models.Profile.query.get(user.user_id)
+        if val is None:
+            val = ERROR_DB_MSG
+        cache.set(key, val, timeout=TIMEOUT)
+    return val
 

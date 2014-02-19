@@ -2,6 +2,66 @@
 
 {% block content %}
 
-        <a href="{{url_for('edit_profile')}}">Edit Profile</a>
+    <div id="profile">
+        <b>Name:</b> {{profile.full_name}}<br>
+        <b>Public Email:</b> {{profile.public_email}}<br>
+        <b>Location:</b> {{profile.location}}<br>
+        <b>Homepage:</b> {{profile.homepage}}<br>
+        <b>Company:</b> {{profile.company}}<br>
+        <b>School:</b> {{profile.school}}<br>
+        <b>Join Date:</b> {{profile.join_date}}<br>
+    </div>
+
+    <div id="profile_form">
+        <form action="" method="post" action="/change_profile">
+
+                <p>
+                    Make Profile Public: {{form.show_public}} <br>
+                    {% for error in form.errors.show_public %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+
+                    Name: {{form.full_name(size=50)}}<br>
+                    {% for error in form.errors.full_name %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+
+                    Public Email: {{form.public_email(size=50)}}<br>
+                    {% for error in form.errors.public_email %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+
+                    Location: {{form.location(size=50)}}<br>
+                    {% for error in form.errors.location %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+
+                    Homepage:
+                    {% if "http://" not in profile.homepage %}
+                        {{form.homepage(size=50, value="http://"+profile.homepage)}}<br>
+                    {% else %}
+                        {{form.homepage(size=50, value=profile.homepage)}}<br>
+                    {% endif %}
+                    {% for error in form.errors.homepage %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+
+                    Company: {{form.company(size=50)}}<br>
+                    {% for error in form.errors.company %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+
+                    School: {{form.school(size=50)}}<br>
+                    {% for error in form.errors.school %}
+                        <p class="form_error">[{{error}}]</p>
+                    {% endfor %}
+                </p>
+
+            <input type="submit" value="Update Profile">
+
+        </form>
+    </div>
+
+
 
 {% endblock %}

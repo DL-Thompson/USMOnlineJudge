@@ -8,6 +8,7 @@ from flask import request
 from flask import redirect
 from flask import url_for
 import db_queries
+import app_cache
 
 @app.route('/login')
 def login():
@@ -18,6 +19,9 @@ def login():
 
 @app.route('/log/<provider_name>/', methods=['GET', 'POST'])
 def log(provider_name):
+    #clears any previously stored login cache info
+    app_cache.clear_cache()
+
     #function to actually login the user with oauth requests
     if g.user is not None and g.user.is_authenticated():
         #check to see if the user is already logged in
@@ -62,6 +66,8 @@ def load_user(email):
 
 @app.route('/logout')
 def logout():
+    #clears any stored cache info before logging out
+    app_cache.clear_cache()
     logout_user()
     return redirect(url_for('login'))
 
