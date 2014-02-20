@@ -22,7 +22,6 @@ class ProfileForm(Form):
                                       validators.Length(min=1, max=120, message="Maximum of 120 characters allowed.")])
 
     homepage = TextField("homepage", [validators.Optional(strip_whitespace=True),
-                                      validators.URL(require_tld=True, message="Invalid URL."),
                                       validators.Length(min=1, max=120, message="Maximum of 120 characters allowed.")])
 
     company = TextField("company", [validators.Optional(strip_whitespace=True),

@@ -53,7 +53,12 @@ def update_profile(profile_form, primary_email):
     profile.show_public = profile_form.show_public.data
     profile.full_name = profile_form.full_name.data
     profile.public_email = profile_form.public_email.data
-    profile.homepage = profile_form.homepage.data
+    if profile_form.homepage.data == "":
+        profile.homepage = profile_form.homepage.data
+    elif "http://" not in profile_form.homepage.data:
+        profile.homepage = "http://" + profile_form.homepage.data
+    else:
+        profile.homepage = profile_form.homepage.data
     profile.company = profile_form.company.data
     profile.school = profile_form.school.data
     profile.location = profile_form.location.data
