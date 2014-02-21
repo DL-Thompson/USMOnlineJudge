@@ -8,8 +8,10 @@ using namespace judge_compiler;
 
 int main(int argc, char* argv[])
 {
-	std::string sourceDirectory = "/home/judge/submission-q";
-	std::string destDirectory = "/home/judge/submission-results";
+	std::string sourceDirectory = "/home/judge/submission-q/";
+	std::string destDirectory = "/home/judge/submission-results/";
+	//std::string sourceDirectory = "/home/cory/Desktop/OJ/sq/";
+	//std::string destDirectory = "/home/cory/Desktop/OJ/sr/";
 	size_t sleepTime = 2;
 
 	// check for arguments
@@ -48,11 +50,11 @@ int main(int argc, char* argv[])
 			std::cout << "Argument not found. Use -h for help on arguments\n";
 			return 0;
 		}
-
-		std::cout << "Setup config:\n";
-		std::cout << "Source directory: " << sourceDirectory << "\nDestination directory: " << destDirectory;
-		std::cout << "\nSleep time between folder check: " << sleepTime << "\n";
 	}
+
+	std::cout << "Setup config:\n";
+	std::cout << "Source directory: " << sourceDirectory << "\nDestination directory: " << destDirectory;
+	std::cout << "\nSleep time between folder check: " << sleepTime << "\n";
 
 	// setup the file finder
 	FileFinder finder;

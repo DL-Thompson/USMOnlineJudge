@@ -185,7 +185,6 @@ std::string FileHandler::execute(std::string executableName)
 
 	std::string result = "";
 	while(fgets(buff, sizeof(buff), in) != NULL) {
-		//std::cout << buff << std::endl;
 		result += buff;
 	}
 	pclose(in);
@@ -224,7 +223,6 @@ bool FileHandler::clean(std::string origFileName, std::string executableName)
 {
 	std::string filePath = m_sourceDir + origFileName;
 	std::string execPath = m_sourceDir + executableName;
-
 
 	if (remove(filePath.c_str()) != 0)
 		return false;
