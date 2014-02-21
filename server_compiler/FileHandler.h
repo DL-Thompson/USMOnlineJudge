@@ -23,13 +23,11 @@ public:
 	void setDirectories(std::string sourceDir, std::string destDir);
 	void addFiles(std::vector<std::string>& files);
 	void run();
-private:
-	// private functions
 	std::string compile(std::string file);
 	std::string execute(std::string executableName);
 	bool save(std::string result, std::string origFileName);
 	bool clean(std::string origFileName, std::string executableName);
-	// private variables
+private:
 	std::vector<std::string> m_fileProcessList;
 	std::string m_sourceDir;
 	std::string m_destDir;

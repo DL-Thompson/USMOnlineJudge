@@ -1,4 +1,4 @@
-FLAGS = -Wall -O3
+FLAGS = -Wall -O3 -pthread
 CXX=g++
 
 compiler_controller:	Compiler_Runner.cpp FileFinder.o FileHandler.o PreScan.o

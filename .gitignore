@@ -2,6 +2,7 @@
 
 # C extensions
 *.so
+*.o
 
 # Packages
 *.egg
@@ -45,8 +46,15 @@ fabfile.*
 #pycharm
 .idea/*
 
-#misc
+#eclipse
+.cproject
+Debug/
+
+#config files
 prod_cfg.py
 dev_cfg.py
 login_cfg.py
+
+#misc
 *.*~
+*~

@@ -8,30 +8,31 @@ using namespace judge_compiler;
 
 int main(int argc, char* argv[])
 {
-	std::string sourceDirectory = "/home/cory/Desktop/OJ/sq/";
-	std::string destDirectory = "/home/cory/Desktop/OJ/sr/";
+	std::string sourceDirectory = "/home/judge/submission-q";
+	std::string destDirectory = "/home/judge/submission-results";
 	size_t sleepTime = 2;
 
 	// check for arguments
 	for(int i = 1; i < argc; ++i)
 	{
+		std::cerr << "ARGS:  " << argv[i] << std::endl;
 		// specifies a directory to check for files
-		if (argv[i] == const_cast<char*>("-s") || argv[i] == const_cast<char*>("--source") )
+		if (std::string(argv[i]) == "-s" || std::string(argv[i]) == "--source" )
 		{
-			sourceDirectory = argv[i+1];
+			sourceDirectory = std::string(argv[i+1]);
 			++i;
 		}
-		else if (argv[i] == const_cast<char*>("-d") || argv[i] == const_cast<char*>("--dest") )
+		else if (std::string(argv[i]) == "-d" || std::string(argv[i]) == "--dest" )
 		{
-			destDirectory = argv[i+1];
+			destDirectory = std::string(argv[i+1]);
 			++i;
 		}
-		else if (argv[i] == const_cast<char*>("-t") || argv[i] == const_cast<char*>("--timer") )
+		else if (std::string(argv[i]) == "-t" || std::string(argv[i]) == "--timer" )
 		{
 			sleepTime = atoi(argv[i+1]);
 			++i;
 		}
-		else if (argv[i] == const_cast<char*>("-h") || argv[i] == const_cast<char*>("--help") )
+		else if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" )
 		{
 			std::cout << "This program checks for new submissions in a specified or default\n";
 			std::cout << "directory, then compiles, error checks, saves results, and removes\n";
@@ -40,7 +41,17 @@ int main(int argc, char* argv[])
 			std::cout << "-d <directory> --dest <directory> specified directory to save results\n";
 			std::cout << "-t <time in integer> --timer <time in integer> amount to sleep between checks\n";
 			std::cout << "-h --help display this help dialog\n";
+			return 0;
 		}
+		else
+		{
+			std::cout << "Argument not found. Use -h for help on arguments\n";
+			return 0;
+		}
+
+		std::cout << "Setup config:\n";
+		std::cout << "Source directory: " << sourceDirectory << "\nDestination directory: " << destDirectory;
+		std::cout << "\nSleep time between folder check: " << sleepTime << "\n";
 	}
 
 	// setup the file finder
