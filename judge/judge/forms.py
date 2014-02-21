@@ -1,4 +1,5 @@
 from wtforms import Form, TextField, IntegerField, TextAreaField, validators, BooleanField
+from wtforms.validators import Required
 
 class DBExerciseUploadForm(Form):
     title = TextField('Title', [validators.Length(min=1, max=60)])
@@ -35,3 +36,7 @@ class ProfileForm(Form):
                                               validators.Length(min=1, max=120, message="Maximum of 120 characters allowed."),
                                               validators.Email(message="The email address is not valid.")])
 
+
+class SearchForm(Form):
+    search = TextField("search", [Required(),
+                                  validators.Length(min=1, max=120, message="Maximum of 120 characters allowed.")])

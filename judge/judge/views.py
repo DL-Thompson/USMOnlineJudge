@@ -16,6 +16,8 @@ import db_posts
 #imports for profile
 from forms import ProfileForm
 from app_cache import is_profile_changed
+from forms import SearchForm
+
 
 @app.route('/')
 @app.route('/index')
@@ -48,6 +50,7 @@ def before_request():
     #if a user is logged in, it is set in the global variable so the login function
     #won't be executed when not needed
     g.user = current_user
+    g.search_form = SearchForm()
 
 
 @app.route('/statistics')
@@ -80,3 +83,17 @@ def profile():
     profile = db_queries.get_profile(current_user.primary_email)
     form = ProfileForm(obj=profile)
     return render_template("profile.html", text=text, profile=profile, form=form)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    form = SearchForm(request.form)
+    if form.validate():
+        return redirect(url_for('search_result', query=form.search.data))
+    return redirect(url_for('index'))
+
+@app.route('/search_result/<query>')
+def search_result(query):
+    #returns the search results for a users searched profile
+    profile = db_queries.get_public_profile(query)
+    return render_template('search_results.html', query=query, profile=profile)

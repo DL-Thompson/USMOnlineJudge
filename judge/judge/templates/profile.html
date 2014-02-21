@@ -2,15 +2,9 @@
 
 {% block content %}
 
-    <div id="profile">
-        <b>Name:</b> {{profile.full_name}}<br>
-        <b>Public Email:</b> {{profile.public_email}}<br>
-        <b>Location:</b> {{profile.location}}<br>
-        <b>Homepage:</b> {{profile.homepage}}<br>
-        <b>Company:</b> {{profile.company}}<br>
-        <b>School:</b> {{profile.school}}<br>
-        <b>Join Date:</b> {{profile.join_date}}<br>
-    </div>
+    {% with profile=profile %}
+        {% include "display_profile.html" %}
+    {% endwith %}
 
     <div id="profile_form">
         <form action="" method="post" action="/change_profile">

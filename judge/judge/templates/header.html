@@ -6,6 +6,10 @@
         </div>
 
         <div  id="user_links" style="float:right">
+            <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">
+                {{g.search_form.search(size=20)}}
+                <input type="submit" value="User Search">
+            </form>
             <!--Profile/Statistics/Logout only displayed if user is logged in.-->
             {% if current_user.is_authenticated() == True %}
                 <a href="{{ url_for('profile') }}">Profile</a>  |

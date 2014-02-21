@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <b>Search Results for {{query}}:</b><br>
+        <br>
+        {% if not profile %}
+            <b>No results found.</b>
+        {% else %}
+            {% with profile=profile %}
+                {% include "display_profile.html" %}
+            {% endwith %}
+        {% endif %}
+
+{% endblock %}

@@ -80,3 +80,14 @@ def get_profile(primary_email):
         cache.set(key, val, timeout=TIMEOUT)
     return val
 
+
+def get_public_profile(primary_email):
+    #searches for a users public profile and returns it if one exists
+    user = get_user(primary_email)
+    if not user:
+        return None
+    profile = models.Profile.query.get(user.user_id)
+    if profile != None and profile.show_public == True:
+        return profile
+    else:
+        return None
