@@ -4,6 +4,8 @@
 
     {% with profile=profile %}
         {% include "display_profile.html" %}
+        <br>
+        <a href="#" onclick="confirm_delete()">Delete Account</a>
     {% endwith %}
 
     <div id="profile_form">
@@ -52,5 +54,15 @@
     </div>
 
 
+<script>
+    function confirm_delete()
+    {
+        var confirm = prompt("Please type \t'delete'\t to confirm.");
+        if (confirm == "delete")
+        {
+            window.location.href = "{{url_for('delete_profile')}}";
+        }
+    }
+</script>
 
 {% endblock %}

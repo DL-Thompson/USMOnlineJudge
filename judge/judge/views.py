@@ -84,6 +84,11 @@ def profile():
     form = ProfileForm(obj=profile)
     return render_template("profile.html", text=text, profile=profile, form=form)
 
+@app.route('/delete_profile')
+@login_required
+def delete_profile():
+    db_posts.delete_user(current_user.primary_email)
+    return redirect(url_for('logout'))
 
 @app.route('/search', methods=['POST'])
 def search():

@@ -64,3 +64,13 @@ def update_profile(profile_form, primary_email):
     profile.location = profile_form.location.data
     db_session.commit()
 
+
+def delete_user(primary_email):
+    #deletes a user and their profile
+    user =  db_queries.get_user(primary_email)
+    #does not use the get_profile query to be sure it's the actual db
+    #profile, and not the one stored in cache
+    profile = models.Profile.query.get(user.user_id)
+    db_session.delete(profile)
+    db_session.delete(user)
+    db_session.commit()
