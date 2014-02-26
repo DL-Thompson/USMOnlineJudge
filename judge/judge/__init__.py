@@ -11,6 +11,15 @@ app = Flask(__name__)
 app.config.from_object('judge.config')
 app.secret_key = config.secret_key
 
+#db migration
+'''
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+migrate = Migrate(app, db_session)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+'''
 
 #initialize the database
 db = SQLAlchemy(app)
