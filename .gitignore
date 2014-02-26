@@ -54,6 +54,10 @@ Debug/
 prod_cfg.py
 dev_cfg.py
 login_cfg.py
+config.py
+
+#stray executables
+compiler_controller
 
 #misc
 *.*~

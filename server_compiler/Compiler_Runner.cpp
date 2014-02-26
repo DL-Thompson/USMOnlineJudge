@@ -8,16 +8,13 @@ using namespace judge_compiler;
 
 int main(int argc, char* argv[])
 {
-	std::string sourceDirectory = "/home/judge/submission-q/";
+	std::string sourceDirectory = "/home/judge/submission-q/";;
 	std::string destDirectory = "/home/judge/submission-results/";
-	//std::string sourceDirectory = "/home/cory/Desktop/OJ/sq/";
-	//std::string destDirectory = "/home/cory/Desktop/OJ/sr/";
 	size_t sleepTime = 2;
 
 	// check for arguments
 	for(int i = 1; i < argc; ++i)
 	{
-		std::cerr << "ARGS:  " << argv[i] << std::endl;
 		// specifies a directory to check for files
 		if (std::string(argv[i]) == "-s" || std::string(argv[i]) == "--source" )
 		{
@@ -48,10 +45,10 @@ int main(int argc, char* argv[])
 		else
 		{
 			std::cout << "Argument not found. Use -h for help on arguments\n";
-			return 0;
+			return 1;
 		}
 	}
-
+	
 	std::cout << "Setup config:\n";
 	std::cout << "Source directory: " << sourceDirectory << "\nDestination directory: " << destDirectory;
 	std::cout << "\nSleep time between folder check: " << sleepTime << "\n";

@@ -4,7 +4,7 @@ from flask import request
 from flask import redirect
 from flask import url_for
 import db_queries
-import upload
+import file_handling
 
 #imports for login
 from flask import g, make_response, session
@@ -37,12 +37,21 @@ def exercises():
 def display_exercise(ex_id=None):
     if request.method == 'POST':
         file = request.files['file']
-        if file and upload.allowed_file(file.filename):
-            filename = upload.secure_filename(file.filename)
-            upload.save(file, filename)
-            return redirect(url_for('display_exercise', ex_id=ex_id))
+        if file:
+            filename = ex_id + ".cpp"
+            file_handling.save(file, filename)
+            session['fn'] = filename
+            return redirect(url_for('display_results', ex_id=ex_id))
     exercise = db_queries.get_exercise(ex_id)
     return render_template("exercise.html", exercise=exercise)
+
+
+@app.route('/exercise/<ex_id>/results')
+def display_results(ex_id=None):
+    filename = session['fn']
+    results = file_handling.get_results(ex_id, filename)
+    session.pop('fn', None)
+    return render_template("submit_result.html", results=results)
 
 
 @app.before_request

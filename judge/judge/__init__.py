@@ -21,13 +21,13 @@ manager.add_command('db', MigrateCommand)
 '''
 
 #secret key
-import prod_cfg
-app.secret_key = prod_cfg.secret_key
+import config
+app.secret_key = config.secret_key
 
 
 from flask.ext.login import LoginManager
 from authomatic import Authomatic
-from login_cfg import log_cfg, login_secret_key
+from config import log_cfg, login_secret_key
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
