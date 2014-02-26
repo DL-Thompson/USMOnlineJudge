@@ -77,7 +77,8 @@ def get_profile(primary_email):
         val =  models.Profile.query.get(user.user_id)
         if val is None:
             val = ERROR_DB_MSG
-        cache.set(key, val, timeout=TIMEOUT)
+        else:
+            cache.set(key, val, timeout=TIMEOUT)
     return val
 
 
@@ -91,3 +92,10 @@ def get_public_profile(primary_email):
         return profile
     else:
         return None
+
+
+def get_profile_from_id(profile_id):
+    #gets a users profile for viewing by the profile id found from querying
+    profile = models.Profile.query.get(profile_id)
+    print "Profile from id: ", profile
+    return profile

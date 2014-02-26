@@ -1,8 +1,9 @@
 import app_cache
 from app_cache import KEY_PROFILE
-import models
-from database import db_session
+from judge import models
+from judge import db
 import db_queries
+
 
 
 def add_exercise(exercise):
@@ -11,10 +12,10 @@ def add_exercise(exercise):
         ex.category = exercise.title
         ex.difficulty = exercise.difficulty
         ex.content = exercise.content
-        db_session.commit()
+        db.session.commit()
     else:
-        db_session.add(exercise)
-        db_session.commit()
+        db.session.add(exercise)
+        db.session.commit()
     app_cache.reset_exercise_list()
     app_cache.reset_exercise(ex.id)
 
@@ -24,10 +25,10 @@ def add_page(p):
     if pg:
         pg.page = p.page
         pg.content = p.content
-        db_session.commit()
+        db.session.commit()
     else:
-        db_session.add(p)
-        db_session.commit()
+        db.session.add(p)
+        db.session.commit()
     app_cache.reset_page_list()
     app_cache.reset_page(pg.id)
 
@@ -35,11 +36,11 @@ def add_page(p):
 def add_user(primary_email):
     #creates a new user with a blank profile
     user = models.User(primary_email=primary_email)
-    db_session.add(user)
-    db_session.commit()
+    db.session.add(user)
+    db.session.commit()
     profile = models.Profile(user)
-    db_session.add(profile)
-    db_session.commit()
+    db.session.add(profile)
+    db.session.commit()
     return user
 
 
@@ -62,7 +63,7 @@ def update_profile(profile_form, primary_email):
     profile.company = profile_form.company.data
     profile.school = profile_form.school.data
     profile.location = profile_form.location.data
-    db_session.commit()
+    db.session.commit()
 
 
 def delete_user(primary_email):
@@ -71,6 +72,6 @@ def delete_user(primary_email):
     #does not use the get_profile query to be sure it's the actual db
     #profile, and not the one stored in cache
     profile = models.Profile.query.get(user.user_id)
-    db_session.delete(profile)
-    db_session.delete(user)
-    db_session.commit()
+    db.session.delete(profile)
+    db.session.delete(user)
+    db.session.commit()

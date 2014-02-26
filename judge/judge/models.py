@@ -1,16 +1,13 @@
-from judge import app
-from database import Base
-from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, BigInteger, ForeignKey
+from judge import app, db
 from datetime import datetime
-from sqlalchemy.orm import relationship
+import flask.ext.whooshalchemy as whooshalchemy
 
 
-class PageContent(Base):
-    __tablename__ = 'PageContent'
 
-    id = Column("ID", Integer, primary_key=True)
-    page = Column("PAGE", String(60))
-    content = Column("CONTENT", Text)
+class PageContent(db.Model):
+    id = db.Column("ID", db.Integer, primary_key=True)
+    page = db.Column("PAGE", db.String(60))
+    content = db.Column("CONTENT", db.Text)
 
     def __init__(self, page, content):
         self.page = page
@@ -23,14 +20,12 @@ class PageContent(Base):
         return self.content
 
 
-class Exercises(Base):
-    __tablename__ = 'Exercises'
-
-    id = Column("ID", Integer, primary_key=True)
-    title = Column("TITLE", String(60))
-    difficulty = Column("DIFFICULTY", Integer)
-    category = Column("CATEGORY", String(20))
-    content = Column("CONTENT", Text)
+class Exercises(db.Model):
+    id = db.Column("ID", db.Integer, primary_key=True)
+    title = db.Column("TITLE", db.String(60))
+    difficulty = db.Column("DIFFICULTY", db.Integer)
+    category = db.Column("CATEGORY", db.String(20))
+    content = db.Column("CONTENT", db.Text)
 
     def __init__(self, title, difficulty, category, content):
         self.title = title
@@ -42,11 +37,10 @@ class Exercises(Base):
         return '<Exercises %r>' % self.title
 
 
-class User(Base):
-    __tablename__ = "User"
-    user_id = Column(BigInteger, autoincrement=True, primary_key=True)
-    primary_email = Column(String(120))
-    profile = relationship('Profile', backref='owner', lazy='dynamic')
+class User(db.Model):
+    user_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    primary_email = db.Column(db.String(120))
+    profile = db.relationship('Profile', backref='user', lazy='dynamic')
 
     def is_authenticated(self):
         return True
@@ -64,18 +58,18 @@ class User(Base):
         return '<Login: %r>' % (self.primary_email)
 
 
-class Profile(Base):
-    __tablename__ = "Profile"
-    profile_id = Column(BigInteger, autoincrement=True, primary_key=True)
-    show_public = Column(Boolean, nullable=False)
-    full_name = Column(String(120))
-    public_email = Column(String(120))
-    homepage = Column(String(256))
-    company = Column(String(120))
-    school = Column(String(120))
-    location = Column(String(120))
-    join_date = Column(DateTime, nullable=False)
-    user_id = Column(BigInteger, ForeignKey('User.user_id'))
+class Profile(db.Model):
+    __searchable__ = ['full_name', 'public_email', 'homepage', 'company', 'school', 'location']
+    profile_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    show_public = db.Column(db.Boolean, nullable=False)
+    full_name = db.Column(db.String(120))
+    public_email = db.Column(db.String(120))
+    homepage = db.Column(db.String(256))
+    company = db.Column(db.String(120))
+    school = db.Column(db.String(120))
+    location = db.Column(db.String(120))
+    join_date = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.user_id'))
 
     def __init__(self, user):
         self.show_public = False
@@ -91,3 +85,5 @@ class Profile(Base):
     def __repr__(self):
         return '<profile_id: %r> \n <show_public: %r> \n <full_name: %r> \n <public_email: %r> \n <homepage: %r> \n <company: %r> \n <school: %r> \n <location: %r> \n' \
                '<join_date: %r> \n <user_id: %r>' % (self.profile_id, self.show_public, self.full_name, self.public_email, self.homepage, self.company, self.school, self.location, self.join_date, self.user_id)
+
+whooshalchemy.whoosh_index(app, Profile)

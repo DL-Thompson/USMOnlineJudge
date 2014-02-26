@@ -1,14 +1,11 @@
 import os
 from judge import app
-from database import production_env
-import prod_cfg
-import dev_cfg
+from judge import config
 from werkzeug.utils import secure_filename
 
-if production_env:
-    UPLOAD_FOLDER = prod_cfg.upload_folder
-else:
-    UPLOAD_FOLDER = dev_cfg.upload_folder
+
+UPLOAD_FOLDER = config.upload_folder
+
 
 ALLOWED_EXTENSIONS = set(['cpp', 'h'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

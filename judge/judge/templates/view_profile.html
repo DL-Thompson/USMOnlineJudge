@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% with profile=profile %}
+    {% include "display_profile.html" %}
+{% endwith %}
+
+{% endblock %}

@@ -1,40 +1,27 @@
 # app initialization
 from flask import Flask
-app = Flask(__name__)
-app.config['csrf_enabled'] = False #enable CSRF later
-
-
-#db session closing
-from database import db_session
-@app.teardown_appcontext
-def shutdown_session(exception=None):
-    db_session.remove()
-
-#db migration
-'''
-from flask.ext.script import Manager
-from flask.ext.migrate import Migrate, MigrateCommand
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-migrate = Migrate(app, db_session)
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
-'''
-
-#secret key
-import prod_cfg
-app.secret_key = prod_cfg.secret_key
-
-
+from judge import config
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from authomatic import Authomatic
-from login_cfg import log_cfg, login_secret_key
+
+
+#initialize the flask app
+app = Flask(__name__)
+app.config.from_object('judge.config')
+app.secret_key = config.secret_key
+
+
+#initialize the database
+db = SQLAlchemy(app)
+
+
+#initialize the login manager
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
-authomatic = Authomatic(log_cfg, login_secret_key, report_errors=False)
+authomatic = Authomatic(config.log_cfg, config.login_secret_key, report_errors=False)
 
 
-# views initialization
+#include the views for the server
 import views
-import views_admin
-import views_login

@@ -10,7 +10,7 @@ KEY_PAGES = 'pages'
 KEY_EXERCISES = 'exs'
 KEY_EXERCISE = 'ex'
 
-KEY_PROFILE = 'profile'
+KEY_PROFILE = 'cached_profile'
 
 
 def reset_exercise_list():

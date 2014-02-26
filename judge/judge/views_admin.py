@@ -8,11 +8,10 @@ import forms
 import models
 import db_queries
 import db_posts
-from database import db_session
+from judge import db
 
 USER_PERMISSIONS = 'admin'
 BAD_HTML = 'no_permissions.html'
-
 
 @app.route('/admin')
 def admin():
@@ -88,8 +87,8 @@ def db_add_exercise():
         form = forms.DBExerciseUploadForm(request.form)
         if request.method == 'POST' and form.validate():
             exercise = models.Exercises(form.title.data, form.difficulty.data, form.category.data, form.content.data)
-            db_session.add(exercise)
-            db_session.commit()
+            db.session.add(exercise)
+            db.session.commit()
             app_cache.reset_exercise_list()
             return redirect(url_for('db_add_exercise'))
         return render_template('/admin/admin_exercise_add.html', form=form)

@@ -5,6 +5,9 @@ from flask import redirect
 from flask import url_for
 import db_queries
 import upload
+import views_admin
+import views_login
+
 
 #imports for login
 from flask import g, make_response, session
@@ -17,6 +20,7 @@ import db_posts
 from forms import ProfileForm
 from app_cache import is_profile_changed
 from forms import SearchForm
+from models import Profile
 
 
 @app.route('/')
@@ -74,21 +78,29 @@ def profile():
                 db_posts.update_profile(form, current_user.primary_email)
             text = db_queries.get_page_content('profile')
             profile = db_queries.get_profile(current_user.primary_email)
-            return render_template("profile.html", text=text, profile=profile, form=form)
+            return render_template("my_profile.html", text=text, profile=profile, form=form)
         else:
             profile = db_queries.get_profile(current_user.primary_email)
-            return render_template("profile.html", text=text, profile=profile, form=form)
+            return render_template("my_profile.html", text=text, profile=profile, form=form)
 
     #sends the user to the profile/edit profile page for GET methods
     profile = db_queries.get_profile(current_user.primary_email)
     form = ProfileForm(obj=profile)
-    return render_template("profile.html", text=text, profile=profile, form=form)
+    return render_template("my_profile.html", text=text, profile=profile, form=form)
+
+
+@app.route('/display_profile/<profile_id>')
+def display_profile(profile_id):
+    profile = db_queries.get_profile_from_id(profile_id)
+    return render_template('view_profile.html', profile=profile)
+
 
 @app.route('/delete_profile')
 @login_required
 def delete_profile():
     db_posts.delete_user(current_user.primary_email)
     return redirect(url_for('logout'))
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -97,8 +109,9 @@ def search():
         return redirect(url_for('search_result', query=form.search.data))
     return redirect(url_for('index'))
 
+
 @app.route('/search_result/<query>')
 def search_result(query):
     #returns the search results for a users searched profile
-    profile = db_queries.get_public_profile(query)
-    return render_template('search_results.html', query=query, profile=profile)
+    results = Profile.query.whoosh_search(query, 50).filter(Profile.show_public == True).all()
+    return render_template('search_results.html', query=query, results=results)

@@ -1,0 +1,16 @@
+
+
+    <style>
+        #profile_link ul { display: inline;}
+        #profile_link ul li {display: inline;}
+    </style>
+
+    <div id="profile_link">
+        <ul>
+            <li><b><a href="{{url_for('display_profile', profile_id=profile.profile_id)}}">{{profile.full_name}}</a></b></li> |
+            <li><b>{{profile.public_email}} </b></li> |
+            <li><b>{{profile.location}} </b></li> |
+            <li><b>Joined:</b> {{profile.join_date}}</li>
+        </ul>
+    </div>
+
