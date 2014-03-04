@@ -6,9 +6,12 @@ error = '-error'
 success = '-success'
 
 
-def save(file, filename):
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
+def save(text, filename):
+    #saves the text from the code editor to a file in the upload directory
+    directory = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file = open(directory, "w")
+    file.write(text)
+    file.close()
 
 def get_results(ex_id, filename):
     results = None

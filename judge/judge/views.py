@@ -43,10 +43,16 @@ def display_exercise(ex_id=None):
     if request.method == 'POST':
         file = request.files['file']
         if file:
-            filename = ex_id + ".cpp"
-            file_handling.save(file, filename)
-            session['fn'] = filename
-            return redirect(url_for('display_results', ex_id=ex_id))
+            data = file.read()
+            exercise = db_queries.get_exercise(ex_id)
+            return render_template("exercise.html", exercise=exercise, data=data)
+        else:
+            text = request.form['code_editor']
+            if text:
+                filename = ex_id + ".cpp"
+                file_handling.save(text, filename)
+                session['fn'] = filename
+                return redirect(url_for('display_results', ex_id=ex_id))
     exercise = db_queries.get_exercise(ex_id)
     return render_template("exercise.html", exercise=exercise)
 

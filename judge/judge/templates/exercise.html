@@ -5,13 +5,23 @@
     {{exercise.title}}<br>
     {{ exercise.content | safe }}
 
+    <style>
+        #file { visibility: hidden; }
+        .CodeMirror { width: 75%; display: block; margin-left: auto; margin-right: auto; text-align: left; }
+        .codemirror-ui-button-frame { width: 75%; display: block; margin-left: auto; margin-right: auto;}
+        #upload { align: center; }
+    </style>
+
     <div id="upload">
-        <p>Upload your file here (.cpp file)</p>
         <form action="" method="post" enctype="multipart/form-data">
-            <p>
-            <input type="file" name="file">
-            <input type="submit" value="Upload">
-            </p>
+            <input type="file" id="file" name="file">
+            <br>
+            <br>
+            {% with data=data %}
+                {% include "editor.html" %}
+            {% endwith %}
+            <br>
+            <input type="submit" id="submit" name="submit" value="Submit Code">
         </form>
     </div>
 {% endblock %}
