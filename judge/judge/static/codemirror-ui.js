@@ -74,7 +74,6 @@ CodeMirrorUI.prototype = {
     if (mirrorOptions.onChange) {
         mirrorOptions.oldOnChange = mirrorOptions.onChange;
         mirrorOptions.onChange = function(instance, textChanged) {
-            mirrorOptions.oldOnChange();
             onChange();
             //passes the original codemirror onChange variables back to the function
             //declared in the codemirror options section of codemirror-ui instantiation
