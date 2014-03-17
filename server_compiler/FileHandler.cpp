@@ -7,11 +7,15 @@
 
 #include "FileHandler.h"
 #include "PreScan.h"
+#include "OutputChecker.h"
 
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
 #include <pthread.h>
+#include <sys/types.h>
+#include <sys/sysinfo.h>
+#include <sstream>
 
 namespace judge_compiler {
 
@@ -20,16 +24,23 @@ typedef struct td {
 	std::string fileName;
 	std::string sourceDir;
 	std::string destDir;
+	std::string checkDir;
+	double exID;
+	double userID;
 } ThreadData;
 
 void* runFile(void* arguments)
 {
+	/*
 	judge_compiler::ThreadData* data;
 	data = (judge_compiler::ThreadData*)arguments;
 
 	std::string f = data->fileName;
 	std::string source = data->sourceDir;
 	std::string dest = data->destDir;
+	std::string checkDir = data->checkDir;
+	double exID = data->exID;
+	double userID = data->userID;
 
 	PreScan scanner;
 	FileHandler fh(source, dest);
@@ -53,6 +64,8 @@ void* runFile(void* arguments)
 			result = fh.execute(executable);
 
 			// check result to answer
+			OutputChecker checker(checkDir);
+			checker.isMatch(result, exID);
 
 		}
 		else
@@ -60,6 +73,8 @@ void* runFile(void* arguments)
 			result = executable;
 			executable = "";
 		}
+
+
 
 		// save result
 		if (!fh.save(result, f))
@@ -70,26 +85,33 @@ void* runFile(void* arguments)
 			std::cerr << "Error cleaning files\n";
 
 	}
-
+	*/
 	return NULL;
+
 }
 
 // ***CLASS FUNCTIONS*** //
 
-FileHandler::FileHandler(std::string sourceDir, std::string destDir)
+FileHandler::FileHandler(std::string sourceDir, std::string destDir, std::string checkDir, std::string storageDir)
 {
 	m_sourceDir = sourceDir;
 	m_destDir = destDir;
+	m_checkDir = checkDir;
+	m_storageDir = storageDir;
+	m_runningTime = 0;
+	m_memoryUsage = 0;
 }
 
 FileHandler::~FileHandler()
 {
 }
 
-void FileHandler::setDirectories(std::string sourceDir, std::string destDir)
+void FileHandler::setDirectories(std::string sourceDir, std::string destDir, std::string checkDir, std::string storageDir)
 {
 	m_sourceDir = sourceDir;
 	m_destDir = destDir;
+	m_checkDir = checkDir;
+	m_storageDir = storageDir;
 }
 
 void FileHandler::addFiles(std::vector<std::string>& files)
@@ -112,6 +134,8 @@ void FileHandler::run()
 
 	size_t num_files = m_fileProcessList.size();
 
+
+	/*						TEMPORARILY REMOVING THREADING
 	// thread variables
 	ThreadData t_data[num_files];
 	pthread_t threads[num_files];
@@ -123,6 +147,9 @@ void FileHandler::run()
 		t_data[t].fileName = m_fileProcessList[t];
 		t_data[t].sourceDir = m_sourceDir;
 		t_data[t].destDir = m_destDir;
+		t_data[t].checkDir = m_checkDir;
+		t_data[t].exID = getExerciseID(m_fileProcessList[t]);
+		t_data[t].userID = getUserID(m_fileProcessList[t]);
 	}
 
 	// running the threads
@@ -138,7 +165,70 @@ void FileHandler::run()
 		if (error[i] != 0)
 			std::cerr << "Error joining threads\n";
 	}
+	*/
 
+	PreScan scanner;
+	FileHandler fh(m_sourceDir, m_destDir);
+
+	for(size_t f = 0; f < m_fileProcessList.size(); f++)
+	{
+		std::string file = m_fileProcessList[f];
+
+		double exID = getExerciseID(file);
+		double userID = getUserID(file);
+
+		// pre-scan
+		if (!scanner.isClean(file))
+		{
+			// save error report
+			if (!fh.saveResult("error-pre-scan", file))
+				std::cerr << "Error saving file\n";
+		}
+		else
+		{
+			// compile
+			std::string executable = fh.compile(file);
+
+			std::string result;
+
+			if (executable.find("error:", 0) == std::string::npos)
+			{
+				// run and get result
+				result = fh.execute(executable);
+
+				// check result to answer
+				/*
+				 * if output is OK, save submitted file to permanent storage with time and mem tags to filename
+				 */
+				OutputChecker checker(m_checkDir);
+				if (checker.isMatch(result, exID))
+				{
+					std::cout << "CORRECT\n";
+					saveCorrect(file);
+				}
+				else
+				{
+					std::cout << "Incorrect Match\n";
+					result = "incorrect";
+				}
+
+			}
+			else
+			{
+				result = executable;
+				executable = "";
+			}
+
+			// save result
+			if (!fh.saveResult(result, file))
+				std::cerr << "Error saving file\n";
+
+			// remove file from queue and executable
+			if (!fh.clean(file, executable))
+				std::cerr << "Error cleaning files\n";
+
+		}
+	}
 	m_fileProcessList.clear();
 }
 
@@ -179,9 +269,19 @@ std::string FileHandler::execute(std::string executableName)
 	FILE *in;
 	char buff[256];
 
+	// start checking the time
+	time_t start = clock();
+
+	// start checking the memory
+
+
+	//run it
 	if (! (in = popen(command.c_str(), "r") )) {
 		return "-1";
 	}
+
+	// check run time
+	m_runningTime = (clock() - start) / (double)CLOCKS_PER_SEC;
 
 	std::string result = "";
 	while(fgets(buff, sizeof(buff), in) != NULL) {
@@ -192,7 +292,7 @@ std::string FileHandler::execute(std::string executableName)
 	return result;
 }
 
-bool FileHandler::save(std::string result, std::string origFileName)
+bool FileHandler::saveResult(std::string result, std::string origFileName)
 {
 	std::string content = result;
 	std::string filePath = "";
@@ -201,6 +301,10 @@ bool FileHandler::save(std::string result, std::string origFileName)
 	if (result.find("error:", 0) != std::string::npos)
 	{
 		filePath += m_destDir + origFileName + "-error";
+	}
+	else if (result.find("incorrect", 0) != std::string::npos)
+	{
+		filePath += m_destDir + origFileName + "-incorrect";
 	}
 	else
 	{
@@ -215,6 +319,41 @@ bool FileHandler::save(std::string result, std::string origFileName)
 
 	outFile << content;
 	outFile.close();
+
+	return true;
+}
+
+bool FileHandler::saveCorrect(std::string origFileName)
+{
+	// copies the good submitted code to a permanent location
+
+	std::string fileCopyContent;
+	std::string origFilePath = m_sourceDir + origFileName;
+	std::string storageFilePath = m_storageDir + origFileName;
+	std::ifstream in;
+	in.open(origFilePath.c_str());
+	if (!in) {
+		std::cerr << "Error opening " << origFilePath << std::endl;
+		return false;
+	}
+
+	while(!in.eof())
+	{
+		std::string tmp;
+		getline(in, tmp);
+		fileCopyContent += tmp;
+	}
+
+	in.close();
+
+	std::ofstream out;
+	out.open(storageFilePath.c_str());
+	if (!out) {
+		std::cerr << "Error opening output file " << storageFilePath << std::endl;
+		return false;
+	}
+	out << fileCopyContent;
+	out.close();
 
 	return true;
 }
@@ -235,5 +374,37 @@ bool FileHandler::clean(std::string origFileName, std::string executableName)
 	return true;
 }
 
+double FileHandler::getExerciseID(std::string fileName)
+{
+	double id;
+
+	// get first of split, split on -
+	std::string splitLeft;
+	size_t endPos = fileName.find('-');
+	splitLeft = fileName.substr(0, endPos);
+	std::cout << "exercise id = " << splitLeft << "\n";
+	std::stringstream ss;
+	ss << splitLeft;
+	ss >> id;
+	return id;
+}
+
+double FileHandler::getUserID(std::string fileName)
+{
+	double id;
+
+	// get second of split, split on -
+	std::string splitMiddle;
+	size_t startPos = fileName.find('-') + 1;
+	size_t endPos = fileName.size();
+	splitMiddle = fileName.substr(startPos, endPos);
+	std::cout << "user id = " << splitMiddle << "\n";
+	std::stringstream ss;
+	ss << splitMiddle;
+	ss >> id;
+
+	return id;
+
+}
 
 } /* namespace judge_compiler */

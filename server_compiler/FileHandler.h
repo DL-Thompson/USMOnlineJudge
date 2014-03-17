@@ -18,19 +18,26 @@ static const std::string OBJECT_PREFIX = "o3falj2j";
 class FileHandler
 {
 public:
-	FileHandler(std::string sourceDir="", std::string destDir="");
+	FileHandler(std::string sourceDir="", std::string destDir="", std::string checkDir="", std::string storageDir="");
 	virtual ~FileHandler();
-	void setDirectories(std::string sourceDir, std::string destDir);
+	void setDirectories(std::string sourceDir, std::string destDir, std::string checkDir, std::string storageDir);
 	void addFiles(std::vector<std::string>& files);
 	void run();
 	std::string compile(std::string file);
 	std::string execute(std::string executableName);
-	bool save(std::string result, std::string origFileName);
+	bool saveResult(std::string result, std::string origFileName);
+	bool saveCorrect(std::string origFileName);
 	bool clean(std::string origFileName, std::string executableName);
 private:
+	double getExerciseID(std::string fileName);
+	double getUserID(std::string fileName);
 	std::vector<std::string> m_fileProcessList;
 	std::string m_sourceDir;
 	std::string m_destDir;
+	std::string m_checkDir;
+	std::string m_storageDir;
+	time_t m_runningTime;
+	long long m_memoryUsage;
 };
 
 

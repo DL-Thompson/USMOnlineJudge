@@ -10,6 +10,8 @@ int main(int argc, char* argv[])
 {
 	std::string sourceDirectory = "/home/judge/submission-q/";;
 	std::string destDirectory = "/home/judge/submission-results/";
+	std::string exCheckDirectory = "/home/judge/exercise-checks/";
+	std::string permanentSaveDirectory = "/home/judge/submission-vault/";
 	size_t sleepTime = 2;
 
 	// check for arguments
@@ -26,6 +28,16 @@ int main(int argc, char* argv[])
 			destDirectory = std::string(argv[i+1]);
 			++i;
 		}
+		else if (std::string(argv[i]) == "-e" || std::string(argv[i]) == "--exercise")
+		{
+			exCheckDirectory = std::string(argv[i+1]);
+			++i;
+		}
+		else if (std::string(argv[i]) == "-p" || std::string(argv[i]) == "--permanent")
+		{
+			permanentSaveDirectory = std::string(argv[i+1]);
+			++i;
+		}
 		else if (std::string(argv[i]) == "-t" || std::string(argv[i]) == "--timer" )
 		{
 			sleepTime = atoi(argv[i+1]);
@@ -38,6 +50,8 @@ int main(int argc, char* argv[])
 			std::cout << "original files\nArguments:\n";
 			std::cout << "-s <directory> --source <directory> specified source directory to search\n";
 			std::cout << "-d <directory> --dest <directory> specified directory to save results\n";
+			std::cout << "-e <directory> --exercise <directory> specified directory where exercise checks are\n";
+			std::cout << "-p <directory> --permanent <directory> directory where permanent submissions are stored\n";
 			std::cout << "-t <time in integer> --timer <time in integer> amount to sleep between checks\n";
 			std::cout << "-h --help display this help dialog\n";
 			return 0;
@@ -49,8 +63,10 @@ int main(int argc, char* argv[])
 		}
 	}
 	
-	std::cout << "Setup config:\n";
+	std::cout << "SETUP CONFIG\n";
 	std::cout << "Source directory: " << sourceDirectory << "\nDestination directory: " << destDirectory;
+	std::cout << "\nExample Files directory: " << exCheckDirectory;
+	std::cout << "\nPermanent Storage location: " << permanentSaveDirectory;
 	std::cout << "\nSleep time between folder check: " << sleepTime << "\n";
 
 	// setup the file finder
@@ -65,7 +81,7 @@ int main(int argc, char* argv[])
 		if (finder.isNewContent())
 		{
 			std::vector<std::string> filesToCompile = finder.getFiles();
-			FileHandler handler(sourceDirectory, destDirectory);
+			FileHandler handler(sourceDirectory, destDirectory, exCheckDirectory, permanentSaveDirectory);
 			handler.addFiles(filesToCompile);
 			handler.run();
 		}

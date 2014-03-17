@@ -39,8 +39,11 @@ def exercises():
 
 
 @app.route('/exercise/<ex_id>', methods=['GET', 'POST'])
+@login_required
 def display_exercise(ex_id=None):
     if request.method == 'POST':
+        profile = db_queries.get_profile(current_user.primary_email)
+        user_id = profile.user_id
         file = request.files['file']
         if file:
             data = file.read()
@@ -49,7 +52,7 @@ def display_exercise(ex_id=None):
         else:
             text = request.form['code_editor']
             if text:
-                filename = ex_id + ".cpp"
+                filename = str(ex_id) + "-" + str(user_id) + ".cpp"
                 file_handling.save(text, filename)
                 session['fn'] = filename
                 return redirect(url_for('display_results', ex_id=ex_id))
@@ -58,9 +61,10 @@ def display_exercise(ex_id=None):
 
 
 @app.route('/exercise/<ex_id>/results')
+@login_required
 def display_results(ex_id=None):
     filename = session['fn']
-    results = file_handling.get_results(ex_id, filename)
+    results = file_handling.get_results(filename)
     session.pop('fn', None)
     return render_template("submit_result.html", results=results)
 

@@ -59,6 +59,9 @@ config.py
 #stray executables
 compiler_controller
 
+#database stuff
+search.db
+
 #misc
 *.*~
 *~
