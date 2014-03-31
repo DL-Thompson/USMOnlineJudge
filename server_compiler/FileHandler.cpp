@@ -16,9 +16,13 @@
 #include <sys/types.h>
 #include <sys/sysinfo.h>
 #include <sstream>
+#include <unistd.h>	//sleep
+#include <ctime>	//clock
+#include <sys/time.h> //gettimeofday
 
 namespace judge_compiler {
 
+/*
 // ***CLASS UTILITIES*** //
 typedef struct td {
 	std::string fileName;
@@ -28,7 +32,7 @@ typedef struct td {
 	double exID;
 	double userID;
 } ThreadData;
-
+*/
 void* runFile(void* arguments)
 {
 	/*
@@ -132,8 +136,6 @@ void FileHandler::run()
 	if (m_fileProcessList.empty())
 		return;
 
-	size_t num_files = m_fileProcessList.size();
-
 
 	/*						TEMPORARILY REMOVING THREADING
 	// thread variables
@@ -175,7 +177,7 @@ void FileHandler::run()
 		std::string file = m_fileProcessList[f];
 
 		double exID = getExerciseID(file);
-		double userID = getUserID(file);
+		//double userID = getUserID(file);
 
 		// pre-scan
 		if (!scanner.isClean(file))
@@ -266,22 +268,32 @@ std::string FileHandler::execute(std::string executableName)
 	std::string dir = m_sourceDir;
 	std::string command = dir + executableName;
 
+	timeval a;
+	timeval b;
+
+
 	FILE *in;
 	char buff[256];
 
 	// start checking the time
-	time_t start = clock();
+	gettimeofday(&a, 0);
+	double t_start = a.tv_sec + (a.tv_usec / 1000000);
 
 	// start checking the memory
-
+	/* not implemented */
 
 	//run it
 	if (! (in = popen(command.c_str(), "r") )) {
 		return "-1";
 	}
 
-	// check run time
-	m_runningTime = (clock() - start) / (double)CLOCKS_PER_SEC;
+	// check end time
+	gettimeofday(&b, 0);
+	double t_end = b.tv_sec + (b.tv_usec / 1000000);
+	m_runningTime = t_end - t_start;
+
+	// check end memory
+	/* not implemented */
 
 	std::string result = "";
 	while(fgets(buff, sizeof(buff), in) != NULL) {
@@ -317,7 +329,7 @@ bool FileHandler::saveResult(std::string result, std::string origFileName)
 	if (!outFile)
 		return false;
 
-	outFile << content;
+	outFile << "Time: " << m_runningTime << "\n";
 	outFile.close();
 
 	return true;

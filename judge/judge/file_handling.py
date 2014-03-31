@@ -34,6 +34,9 @@ def get_results(filename):
                 results.append(clean(line.decode('utf-8')))
         elif os.path.exists(file_path+success):
             file_path += success
+            with open(file_path, 'r') as f:
+                for line in f:
+                    print line
             results = [SUCCESS_MESSAGE]
         elif os.path.exists(file_path+incorrect):
             file_path += incorrect
