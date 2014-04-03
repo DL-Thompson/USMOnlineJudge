@@ -1,26 +1,28 @@
 <header>
-    <h2>
-        <div id="site_links" style="float:left">
-            <a href="{{ url_for('index') }}">Home</a>  |
-            <a href="{{ url_for('exercises') }}">Exercises</a>
+    <div class="header">
+        <div class="banner">
+            <h1>USM Online Judge</h1>
         </div>
-
-        <div  id="user_links" style="float:right">
-            <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">
-                {{g.search_form.search(size=20)}}
-                <input type="submit" value="User Search">
-            </form>
-            <!--Profile/Statistics/Logout only displayed if user is logged in.-->
-            {% if current_user.is_authenticated() == True %}
-                <a href="{{ url_for('profile') }}">Profile</a>  |
-                <a href="{{ url_for('statistics')}}">Statistics</a>  |
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
-            <!--Login displayed if user is logged out-->
-            {% if current_user.is_authenticated() == False %}
-                <a href="{{ url_for('login') }}">Login</a>
-            {% endif %}
-
+        <div class="topmenu">
+            <ul>
+                <li style="border-left: medium none;"><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('exercises') }}">Exercises</a></li>
+                <!-- search -->
+                <li><form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">
+                        {{g.search_form.search(size=20)}}
+                        <input type="submit" value="User Search">
+                    </form></li>
+                <!-- only visible when logged in -->
+                {% if current_user.is_authenticated() == True %}
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('statistics')}}">Statistics</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% endif %}
+                <!-- only visible when logged out -->
+                {% if current_user.is_authenticated() == False %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </h2>
+    </div>
 </header>

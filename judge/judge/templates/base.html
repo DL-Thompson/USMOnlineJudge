@@ -1,34 +1,61 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta name="author" content="Lucas Thompson, Cory Brown">
+        <meta name="keywords" content="Online Judge, coding, challenge, programming">
+        <meta name="description" content="University of Southern Mississippi Online Judge prototype">
+        <meta charset="iso-8859-1">
+        <link rel="stylesheet" type="text/css" href="static/style.css">
         <title>USM Online Judge</title>
     </head>
 
     <body>
-
+        <div class="main">
+        <div class="page">
         <div id="header">
             {% include 'header.html' %}
-            <br>
-            <br>
-            <hr>
-        </div>
+        </div> <!-- header -->
 
-        <div id="content" style="text-align:center;">
-            <br>
-                <div id="page_description">
-                    <p>
-                    {% if text %}
-                        {{ text | safe }}
-                    {% endif %}
-                    </p>
-                </div>
-            {% block content %}
-            {% endblock %}
-        </div>
+        <div class="content">
+        <div class="content-in">
+        <div class="left-panel">
+            <h2>Categories</h2>
+            <div class="left-content">
+                <ul>
+                  <li><a href="#">List item (1)</a></li>
+                  <li><a href="#">List item (2)</a></li>
+                  <li><a href="#">List item (3)</a></li>
+                  <li><a href="#">List item (4)</a></li>
+                  <li><a href="#">List item (5)</a></li>
+                  <li><a href="#">List item (6)</a></li>
+                  <li><a href="#">List item (7)</a></li>
+                  <li><a href="#">List item (8)</a></li>
+                  <li><a href="#">List item (9)</a></li>
+                </ul>
+            </div> <!-- left content -->
+        </div> <!-- left panel -->
 
-        <div id="footer">
-            <br>
-            <hr>
+        <div class="right-panel">
+        <div class="right-panel-in">
+        <div class="row">
+            <h2 class="title"><span>
+                {% if text %}
+                    {{ text | safe }}
+                {% endif %}
+            </span></h2>
+            <div class="row2">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        </div> <!-- right panel in-->
+        </div> <!-- right panel -->
+        </div> <!-- content in-->
+        </div> <!-- content -->
+        <div class="footer">
             {% include 'footer.html' %}
-        </div>
+        </div> <!-- footer -->
+        </div> <!-- page -->
+        </div> <!-- main -->
     </body>
 </html>
