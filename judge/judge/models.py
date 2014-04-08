@@ -87,3 +87,23 @@ class Profile(db.Model):
                '<join_date: %r> \n <user_id: %r>' % (self.profile_id, self.show_public, self.full_name, self.public_email, self.homepage, self.company, self.school, self.location, self.join_date, self.user_id)
 
 whooshalchemy.whoosh_index(app, Profile)
+
+
+class Statistics(db.Model):
+    statistic_id = db.Column("STATISTIC_ID", db.BigInteger, primary_key=True, autoincrement=True)
+    profile_id = db.Column("PROFILE_ID", db.BigInteger, db.ForeignKey('profile.profile_id'))
+    exercise_id = db.Column("EXERCISE_ID", db.Integer)
+    time = db.Column("TIME", db.Integer)
+    memory = db.Column("MEMORY", db.Integer)
+    attempts = db.Column("ATTEMPTS", db.Integer)
+    passed = db.Column("PASSED", db.Boolean)
+
+    def __init__(self, profile_id, exercise_id, time, memory, passed):
+        self.profile_id = profile_id
+        self.exercise_id = exercise_id
+        self.time = time
+        self.memory = memory
+        self.passed = passed
+
+    def __repr__(self):
+        return '<Statistic ID: %r>\n<Profile ID: %r>\n<Exercise ID: %r>\n<Time: %r>\n<Memory: %r>\n<Attempts: %r>\n<Passed: %r>' % (self.statistic_id, self.profile_id, self.exercise_id, self.time, self.memory, self.attempts, self.passed)

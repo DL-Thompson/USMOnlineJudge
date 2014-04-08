@@ -72,6 +72,27 @@ def delete_user(primary_email):
     #does not use the get_profile query to be sure it's the actual db
     #profile, and not the one stored in cache
     profile = models.Profile.query.get(user.user_id)
+    statistics = models.Statistics.query.filter_by(profile_id=profile.profile_id).all()
+    for s in statistics:
+        db.session.delete(s)
     db.session.delete(profile)
     db.session.delete(user)
     db.session.commit()
+
+def add_exercise_statistic(primary_email, exercise_id, time, memory, passed):
+    #create or modify a profiles statistic on a particular exercise
+    profile_id = db_queries.get_profile(primary_email).profile_id
+    statistic = db_queries.get_exercise_statistic(profile_id, exercise_id)
+    if statistic:
+        #update statistic db entry
+        statistic.attempts += 1
+        statistic.time = time
+        statistic.memory = memory
+        statistic.passed = passed
+        db.session.commit()
+    else:
+        #create new statistic db entry
+        statistic = models.Statistics(profile_id, exercise_id, time, memory, passed)
+        statistic.attempts = 1
+        db.session.add(statistic)
+        db.session.commit()

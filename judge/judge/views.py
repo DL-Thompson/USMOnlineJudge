@@ -65,8 +65,32 @@ def display_exercise(ex_id=None):
 def display_results(ex_id=None):
     filename = session['fn']
     results = file_handling.get_results(filename)
+    #if success, the results contain valid data, assign it
+    if file_handling.SUCCESS_MESSAGE in results.values():
+        print "Success in results."
+        time = results['time']
+        memory = results['memory']
+        passed = True
+    else:
+        #if error or fail, there is no data, set incorrect values
+        time = None
+        memory = None
+        passed = False
+    if ex_id:
+        #post the statistic to the database if the exercise number is valid
+        db_posts.add_exercise_statistic(current_user.primary_email, ex_id, time, memory, passed)
     session.pop('fn', None)
-    return render_template("submit_result.html", results=results)
+    #builds a list of messages to pass to the template
+    list = []
+    list.append(results['message'])
+    if file_handling.SUCCESS_MESSAGE in results.values():
+        list.append("Your program ran in " + str(time) + " s/ms/?")
+        list.append("Your program used " + str(memory) + " b/kb/?")
+    elif file_handling.INCORRECT_MESSAGE in results.values():
+        pass
+    else:
+        list.append(results['errors'])
+    return render_template("submit_result.html", results=list)
 
 
 @app.before_request
@@ -81,7 +105,30 @@ def before_request():
 @login_required
 def statistics():
     text = db_queries.get_page_content('statistics')
-    return render_template("statistics.html", text=text)
+    statistics = db_queries.get_users_statistics(current_user.primary_email)
+    #builds a list of data for each exercise to pass to the template
+    list = []
+    for s in statistics:
+        stats = {}
+        stats['exercise_id'] = s.exercise_id
+        if s.memory != None:
+            stats['memory'] = s.memory
+        else:
+            stats['memory'] = "Incomplete"
+        if s.time != None:
+            stats['time'] = s.time
+        else:
+            stats['time'] = "Incomplete"
+        stats['attempts'] = s.attempts
+        if s.passed == True:
+            stats['passed'] = "Passed"
+        else:
+            stats['passed'] = "Failed"
+        list.append(stats)
+    #get user id to pass to the template to build the link to the last correctly submitted exercise
+    user_id = db_queries.get_user(current_user.primary_email).user_id
+    link_dir = app.config['STORAGE_FOLDER']
+    return render_template("statistics.html", text=text, statistics=list, link_dir=link_dir, user_id=user_id)
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -135,3 +182,10 @@ def search_result(query):
     #returns the search results for a users searched profile
     results = Profile.query.whoosh_search(query, 50).filter(Profile.show_public == True).all()
     return render_template('search_results.html', query=query, results=results)
+
+#route to serve the saved source code files
+@app.route('/source_code/<path:filename>')
+def source_code(filename):
+    path = app.config['STORAGE_FOLDER']
+    from flask import send_from_directory
+    return send_from_directory(path, filename)

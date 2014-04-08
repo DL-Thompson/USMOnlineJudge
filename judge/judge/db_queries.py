@@ -99,3 +99,15 @@ def get_profile_from_id(profile_id):
     profile = models.Profile.query.get(profile_id)
     print "Profile from id: ", profile
     return profile
+
+
+def get_exercise_statistic(profile_id, exercise_id):
+    statistic = models.Statistics.query.filter_by(profile_id=profile_id, exercise_id=exercise_id).first()
+    return statistic
+
+
+def get_users_statistics(primary_email):
+    #returns a list of a users exercise statistics
+    profile_id = get_profile(primary_email).profile_id
+    statistics = models.Statistics.query.filter_by(profile_id=profile_id).all()
+    return statistics

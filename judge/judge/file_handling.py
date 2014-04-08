@@ -20,7 +20,7 @@ def save(text, filename):
 
 
 def get_results(filename):
-    results = None
+    results = {}
     file_path = os.path.join(app.config['RESULTS_FOLDER'], filename)
     while not results:
         if os.path.exists(file_path+error):
@@ -28,19 +28,40 @@ def get_results(filename):
             file = open(file_path, 'r')
             if not file:
                 continue
-            results = ["There was an error in your submission.\n"]
+            results['message'] = "There was an error in your submission.\n"
             lines = file.readlines()
+            errors = []
             for line in lines:
-                results.append(clean(line.decode('utf-8')))
+                errors.append(clean(line.decode('utf-8')))
+            results['errors'] = errors
         elif os.path.exists(file_path+success):
             file_path += success
             with open(file_path, 'r') as f:
+                m = None
+                t = None
                 for line in f:
-                    print line
-            results = [SUCCESS_MESSAGE]
+                    if "Time:" in line:
+                        for st in line.split():
+                            try:
+                                t = float(st)
+                            except ValueError:
+                                pass
+                    if "Memory:" in line:
+                        for st in line.split():
+                            try:
+                                m = float(st)
+                            except ValueError:
+                                pass
+                if not t:
+                    t = 0
+                if not m:
+                    m = 0
+            results['message'] = SUCCESS_MESSAGE
+            results['time'] = t
+            results['memory'] = m
         elif os.path.exists(file_path+incorrect):
             file_path += incorrect
-            results = [INCORRECT_MESSAGE]
+            results['message'] = INCORRECT_MESSAGE
     delete_file(file_path)
     return results
 
