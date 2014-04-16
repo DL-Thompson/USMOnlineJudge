@@ -2,14 +2,6 @@
 
 {% block content %}
 
-<div id="exercise_list">
-
-    {% for e in exercises %}
-        <a href="{{ url_for('display_exercise', ex_id=e.id) }}">{{ e.title }}</a>
-        <br>
-    {% endfor %}
-
-</div>
-
+    Choose an exercise to the left
 
 {% endblock %}

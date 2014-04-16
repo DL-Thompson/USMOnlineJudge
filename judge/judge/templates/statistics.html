@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    <!--
     <div id="stat_table">
         <p>Values displayed are from your last attempt at the exercise.</p>
         <br>
@@ -32,6 +34,43 @@
             {% endfor %}
         {% endif %}
         </table>
+    </div>
+    -->
+
+    <div id="stat_table">
+        <p>Values displayed are from your last attempt at the exercise.</p>
+        <br>
+        {% if statistics %}
+            {% for s in statistics %}
+                <table>
+                    <tr>
+                        <td>Exercise Number</td>
+                        <td>{{s.exercise_id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Time Usage</td>
+                        <td>{{s.time}}</td>
+                    </tr>
+                    <tr>
+                        <td>Number of Attempts</td>
+                        <td>{{s.attempts}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last attempt</td>
+                        <td>{{s.passed}}</td>
+                    </tr>
+                    <td>Last success</td>
+                        {% set filename = s.exercise_id %}
+                        {% set filename = filename ~ "-" %}
+                        {% set filename = filename ~ user_id %}
+                        {% set filename = filename ~ ".cpp" %}
+
+                    <td><a href="{{url_for('source_code', filename=filename)}}" target="_blank">Exercise {{s.exercise_id}}</a></td>
+                </table>
+            {% endfor %}
+        {% else %}
+            No statistics found for your account.
+        {% endif %}
     </div>
 
 

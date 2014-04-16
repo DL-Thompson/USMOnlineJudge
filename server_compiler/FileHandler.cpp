@@ -17,7 +17,8 @@
 #include <sys/sysinfo.h>
 #include <sstream>
 #include <unistd.h>	//sleep
-#include <ctime>	//clock
+//#include <ctime>	//clock
+#include <time.h>
 #include <sys/time.h> //gettimeofday
 
 namespace judge_compiler {
@@ -268,16 +269,11 @@ std::string FileHandler::execute(std::string executableName)
 	std::string dir = m_sourceDir;
 	std::string command = dir + executableName;
 
-	timeval a;
-	timeval b;
-
-
 	FILE *in;
 	char buff[256];
 
 	// start checking the time
-	gettimeofday(&a, 0);
-	double t_start = a.tv_sec + (a.tv_usec / 1000000);
+	clock_t start = clock();
 
 	// start checking the memory
 	/* not implemented */
@@ -287,11 +283,12 @@ std::string FileHandler::execute(std::string executableName)
 		return "-1";
 	}
 
-	// check end time
-	gettimeofday(&b, 0);
-	double t_end = b.tv_sec + (b.tv_usec / 1000000);
-	m_runningTime = t_end - t_start;
+	// check end time	
+	clock_t end = clock();
 
+	m_runningTime = (double)end - (double)start;
+	
+	
 	// check end memory
 	/* not implemented */
 

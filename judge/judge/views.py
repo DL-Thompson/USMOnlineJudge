@@ -35,7 +35,7 @@ def index():
 def exercises():
     text = db_queries.get_page_content('exercises')
     exercise_list = db_queries.get_exercise_list()
-    return render_template("exercises.html", text=text, exercises=exercise_list)
+    return render_template("exercises.html", text=text, leftPanelContent=exercise_list)
 
 
 @app.route('/exercise/<ex_id>', methods=['GET', 'POST'])

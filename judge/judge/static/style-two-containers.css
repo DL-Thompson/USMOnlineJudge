@@ -1,0 +1,155 @@
+.left-panel {
+	width: 238px;
+	float: left;
+    border-radius: 15px;
+}
+.left-panel h2 {
+	/*font-size: 22px;*/
+    font-size: 1.08em;
+	line-height: 48px;
+    /*letter-spacing: 2px;*/
+	color: #f1f1f1;
+    background-color: #424242;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+	/*height: 48px;*/
+	padding-left: 20px;
+}
+.gap {
+	height: 9px;
+	clear: both;
+}
+.left-content {
+	background-color: #f1f1f1;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+	clear: both;
+	padding-bottom: 24px;
+    padding-top: 15px;
+}
+.left-content ul {
+	padding-right: 18px;
+	padding-left: 18px;
+	list-style-type: none;
+}
+.left-content ul li {
+    font-size: 0.9em;
+	line-height: 29px;
+	color: #000000;
+	text-decoration: none;
+	background-image: url(images/red-bullet.jpg);
+	background-repeat: no-repeat;
+	background-position: 7px center;
+	text-align: left;
+	display: block;
+	height: 29px;
+	padding-left: 35px;
+}
+.left-content ul li a {
+	color: #000000;
+}
+.left-content ul li a:hover {
+	color: #ff0303;
+}
+.left-content ol {
+	padding-right: 11px;
+	padding-left: 11px;
+	list-style-type: none;
+}
+.left-content ol li {
+	color: #000000;
+	background-image: url(images/black-bullet.jpg);
+	background-repeat: no-repeat;
+	background-position: left 24px;
+	padding-left: 16px;
+	padding-top: 20px;
+}
+a.more {
+	/*font-size: 12px;*/
+	color: #ff0303;
+	text-decoration: none;
+	text-align: right;
+}
+a.more:hover {
+	text-decoration: underline;
+}
+.right-panel {
+	background-color: #424242;
+    border-radius: 15px;
+	width: 698px;
+	float: right;
+	padding-top: 16px;
+    color: #f1f1f1;
+
+}
+.right-panel-in {
+	width: 698px;
+	float: left;
+	padding-bottom: 16px;
+}
+.right-panel-in strong {
+	color: #FFFFFF;
+}
+.row {
+	clear: both;
+}
+.title {
+	/*font-size: 22px;*/
+    font-size: 1.08em;
+	line-height: 25px;
+	color: #fafafa;
+	height: 30px;
+	padding-left: 34px;
+}
+.title span {
+	padding-right: 5px;
+	padding-left: 5px;
+}
+.title span span {
+	color: #990000;
+	padding: 0px;
+}
+.copyright {
+	border: 0px;
+	height: 1px;
+	width: 1px;
+}
+.row2 {
+	clear: both;
+	padding: 14px 35px 55px 44px;
+}
+ul.list-home {
+	list-style-type: none;
+}
+ul.list-home li {
+	background-image: url(images/round-bullet.jpg);
+	background-repeat: no-repeat;
+	background-position: left 4px;
+	padding-left: 25px;
+	margin-top: 10px;
+}
+.vline {
+	background-image: url(images/vline.jpg);
+	background-repeat: no-repeat;
+	background-position: 340px top;
+	width: 689px;
+	float: left;
+	padding-right: 9px;
+}
+.section1 {
+	width: 320px;
+	float: left;
+}
+.section2 {
+	width: 320px;
+	float: right;
+}
+a.more2 {
+	/*font-size: 12px;*/
+	/*font-weight: bold;*/
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a.more2:hover {
+	text-decoration: none;
+}
