@@ -15,10 +15,11 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, input, textarea {
 }
 a {
 	color: #70e7ff;
-	text-decoration: underline;
+	/*text-decoration: underline;*/
 }
 a:hover {
 	text-decoration: none;
+    color: #E8BF19;
 }
 .main {
 	width: 989px;
@@ -71,7 +72,10 @@ a:hover {
 	text-decoration: none;
 }
 .topmenu ul li a:hover {
-	text-decoration: underline;
+	/*text-decoration: underline;*/
+    color: #E8BF19;
+    text-decoration: none;
+    font-weight:bold;
 }
 .content {
     /*background-color: #090909;*/
@@ -89,18 +93,26 @@ a:hover {
 	padding-bottom: 20px;
 }
 .footer {
-	line-height: 61px;
-	width: 949px;
+	/*line-height: 61px;*/
+	width: 900px;
 	height: 61px;
-	float: left;
-	padding: 0px 20px;
+	/*float: left;*/
+	/*padding: 0px 20px;*/
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 .footer p {
 	/*font-size: 12px;*/
     font-size: 0.7em;
-	color: #FFFFFF;
-	float: left;
+	/*color: #FFFFFF;*/
+    color: gold;
+	/*float: left;*/
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
+/*
 .footer ul {
 	float: right;
 	list-style-type: none;
@@ -113,10 +125,9 @@ a:hover {
 	border-left-color: #FFFFFF;
 }
 .footer ul li a {
-	/*font-size: 12px;*/
 	color: #FFFFFF;
 	text-decoration: none;
 }
 .footer ul li a:hover {
 	text-decoration: underline;
-}
+}*/

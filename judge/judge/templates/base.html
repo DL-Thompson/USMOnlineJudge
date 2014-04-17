@@ -5,7 +5,7 @@
         <meta name="keywords" content="Online Judge, coding, challenge, programming">
         <meta name="description" content="University of Southern Mississippi Online Judge prototype">
         <meta charset="iso-8859-1">
-        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <title>USM Online Judge</title>
     </head>
@@ -22,9 +22,9 @@
 
         <!-- PICKING THE CSS FOR TWO PANEL OR ONE PANEL DEPENDING ON IF leftPanelContent WAS SUPPLIED -->
         {% if leftPanelContent %}
-            <link rel="stylesheet" type="text/css" href="static/style-two-containers.css">
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-two-containers.css') }}">
         {% else %}
-            <link rel="stylesheet" type="text/css" href="static/style-one-container.css">
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-one-container.css') }}">
         {% endif %}
 
         {% if leftPanelContent %}
@@ -71,6 +71,7 @@
         </div> <!-- right panel -->
         </div> <!-- content in-->
         </div> <!-- content -->
+
         <div class="footer">
             {% include 'footer.html' %}
         </div> <!-- footer -->

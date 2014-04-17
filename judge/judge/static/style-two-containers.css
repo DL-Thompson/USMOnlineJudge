@@ -49,7 +49,8 @@
 	color: #000000;
 }
 .left-content ul li a:hover {
-	color: #ff0303;
+	/*color: #ff0303;*/
+    color: #E8BF19;
 }
 .left-content ol {
 	padding-right: 11px;
@@ -66,12 +67,15 @@
 }
 a.more {
 	/*font-size: 12px;*/
-	color: #ff0303;
+	/*color: #ff0303;*/
+    color: #E8BF19;
 	text-decoration: none;
 	text-align: right;
 }
 a.more:hover {
-	text-decoration: underline;
+	/*text-decoration: underline;*/
+    text-decoration: none;
+    color: #E8BF19;
 }
 .right-panel {
 	background-color: #303030;
