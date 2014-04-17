@@ -9,7 +9,7 @@
 	line-height: 48px;
     /*letter-spacing: 2px;*/
 	color: #f1f1f1;
-    background-color: #424242;
+    background-color: #303030;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 	/*height: 48px;*/
@@ -74,12 +74,12 @@ a.more:hover {
 	text-decoration: underline;
 }
 .right-panel {
-	background-color: #424242;
+	background-color: #303030;
     border-radius: 15px;
 	width: 698px;
 	float: right;
 	padding-top: 16px;
-    color: #f1f1f1;
+    color: #e0e0e0;
 
 }
 .right-panel-in {
@@ -88,7 +88,7 @@ a.more:hover {
 	padding-bottom: 16px;
 }
 .right-panel-in strong {
-	color: #FFFFFF;
+	color: #e0e0e0;
 }
 .row {
 	clear: both;
@@ -97,7 +97,7 @@ a.more:hover {
 	/*font-size: 22px;*/
     font-size: 1.08em;
 	line-height: 25px;
-	color: #fafafa;
+	color: #e0e0e0;
 	height: 30px;
 	padding-left: 34px;
 }

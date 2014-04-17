@@ -1,12 +1,12 @@
 .right-panel {
-	background-color: #424242;
+	background-color: #303030;
     border-radius: 15px;
 	/*width: 698px;*/
     width: 900px;
 	float: left;
 	padding-top: 16px;
     padding-right: 50px;
-    color: #f1f1f1;
+    color: #e0e0e0;
 
 }
 .right-panel-in {
@@ -15,16 +15,17 @@
 	padding-bottom: 16px;
 }
 .right-panel-in strong {
-	color: #FFFFFF;
+	color: #e0e0e0;
 }
 .row {
 	clear: both;
 }
 .title {
 	/*font-size: 22px;*/
-    font-size: 1.2em;
+    font-size: 1.08em;
 	line-height: 25px;
-	color: #fafafa;
+	/*color: #fafafa;*/
+    color: #e0e0e0;
 	height: 30px;
 	padding-left: 34px;
 }

@@ -74,7 +74,8 @@ a:hover {
 	text-decoration: underline;
 }
 .content {
-    background-color: #090909;
+    /*background-color: #090909;*/
+    background-color: transparent;
     border-radius: 20px;
 	width: 989px;
 	float: left;
