@@ -97,7 +97,6 @@ def get_public_profile(primary_email):
 def get_profile_from_id(profile_id):
     #gets a users profile for viewing by the profile id found from querying
     profile = models.Profile.query.get(profile_id)
-    print "Profile from id: ", profile
     return profile
 
 
