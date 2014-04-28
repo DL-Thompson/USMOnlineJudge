@@ -106,8 +106,28 @@ def get_exercise_statistic(profile_id, exercise_id):
     return statistic
 
 
-def get_users_statistics(primary_email):
+def get_users_statistics(primary_email, profile_id):
     #returns a list of a users exercise statistics
-    profile_id = get_profile(primary_email).profile_id
+    if profile_id == None:
+        profile_id = get_profile(primary_email).profile_id
     statistics = models.Statistics.query.filter_by(profile_id=profile_id).all()
+    list = []
+    #builds a list of data for each exercise to pass to the template
+    for s in statistics:
+        stats = {}
+        stats['exercise_id'] = s.exercise_id
+        if s.memory != None:
+            stats['memory'] = s.memory
+        else:
+            stats['memory'] = "Incomplete"
+        if s.time != None:
+            stats['time'] = s.time
+        else:
+            stats['time'] = "Incomplete"
+        stats['attempts'] = s.attempts
+        if s.passed == True:
+            stats['passed'] = "Passed"
+        else:
+            stats['passed'] = "Failed"
+        list.append(stats)
     return statistics

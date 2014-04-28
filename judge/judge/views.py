@@ -105,30 +105,12 @@ def before_request():
 @login_required
 def statistics():
     text = db_queries.get_page_content('statistics')
-    statistics = db_queries.get_users_statistics(current_user.primary_email)
-    #builds a list of data for each exercise to pass to the template
-    list = []
-    for s in statistics:
-        stats = {}
-        stats['exercise_id'] = s.exercise_id
-        if s.memory != None:
-            stats['memory'] = s.memory
-        else:
-            stats['memory'] = "Incomplete"
-        if s.time != None:
-            stats['time'] = s.time
-        else:
-            stats['time'] = "Incomplete"
-        stats['attempts'] = s.attempts
-        if s.passed == True:
-            stats['passed'] = "Passed"
-        else:
-            stats['passed'] = "Failed"
-        list.append(stats)
+    statistics = db_queries.get_users_statistics(current_user.primary_email, None)
+
     #get user id to pass to the template to build the link to the last correctly submitted exercise
     user_id = db_queries.get_user(current_user.primary_email).user_id
     link_dir = app.config['STORAGE_FOLDER']
-    return render_template("statistics.html", text=text, statistics=list, link_dir=link_dir, user_id=user_id)
+    return render_template("statistics.html", text=text, statistics=statistics, link_dir=link_dir, user_id=user_id)
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -159,7 +141,8 @@ def profile():
 @app.route('/display_profile/<profile_id>')
 def display_profile(profile_id):
     profile = db_queries.get_profile_from_id(profile_id)
-    return render_template('view_profile.html', profile=profile)
+    statistics = db_queries.get_users_statistics(None, profile_id)
+    return render_template('view_profile.html', profile=profile, statistics=statistics)
 
 
 @app.route('/delete_profile')

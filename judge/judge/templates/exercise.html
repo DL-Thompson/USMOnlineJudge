@@ -3,7 +3,10 @@
 {% block content %}
 
     {{exercise.title}}<br>
+
+    <div id="">
     {{ exercise.content | safe }}
+    </div>
 
     <style>
         #file { visibility: hidden; }
