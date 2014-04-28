@@ -122,9 +122,9 @@ def profile():
         form = ProfileForm(request.form)
         if form.validate():
             #sends the user to the profile/edit profile page with updated information
-            if is_profile_changed(form):
-                #user profile has been changed, update the database
-                db_posts.update_profile(form, current_user.primary_email)
+            # if is_profile_changed(form):
+            #     #user profile has been changed, update the database
+            db_posts.update_profile(form, current_user.primary_email)
             text = db_queries.get_page_content('profile')
             profile = db_queries.get_profile(current_user.primary_email)
             return render_template("my_profile.html", text=text, profile=profile, form=form)
