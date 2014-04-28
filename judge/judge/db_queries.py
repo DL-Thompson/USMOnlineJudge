@@ -133,4 +133,4 @@ def get_users_statistics(primary_email, profile_id):
         else:
             stats['passed'] = "Failed"
         list.append(stats)
-    return statistics
+    return list

@@ -1,81 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="author" content="Lucas Thompson, Cory Brown">
-        <meta name="keywords" content="Online Judge, coding, challenge, programming">
-        <meta name="description" content="University of Southern Mississippi Online Judge prototype">
-        <meta charset="iso-8859-1">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-        <title>USM Online Judge</title>
-    </head>
+<head>
+    <meta name="author" content="Lucas Thompson, Cory Brown">
+    <meta name="keywords" content="Online Judge, coding, challenge, programming">
+    <meta name="description" content="University of Southern Mississippi Online Judge prototype">
+    <meta charset="iso-8859-1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <title>USM Online Judge</title>
+</head>
 
-    <body>
-        <div class="main">
-        <div class="page">
+<body>
+<div class="main">
+    <div class="page">
         <div id="header">
             {% include 'header.html' %}
-        </div> <!-- header -->
-
-        <div class="content">
-        <div class="content-in">
-
-        <!-- PICKING THE CSS FOR TWO PANEL OR ONE PANEL DEPENDING ON IF leftPanelContent WAS SUPPLIED -->
-        {% if leftPanelContent %}
-            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-two-containers.css') }}">
-        {% else %}
-            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-one-container.css') }}">
-        {% endif %}
-
-        {% if leftPanelContent %}
-            <div class="left-panel">
-                <h2>Choose</h2>
-                <div class="left-content">
-                    {% if leftPanelContent %}
-                        <ul>
-                        {% for l in leftPanelContent %}
-                            <li><a href=" {{ url_for('display_exercise', ex_id=l.id)}} "> {{l.title}}</a></li>
-                        {% endfor %}
-                        </ul>
-                    {% else %}
-                        <ul>
-                          <li><a href="#">List item (1)</a></li>
-                          <li><a href="#">List item (2)</a></li>
-                          <li><a href="#">List item (3)</a></li>
-                          <li><a href="#">List item (4)</a></li>
-                          <li><a href="#">List item (5)</a></li>
-                          <li><a href="#">List item (6)</a></li>
-                          <li><a href="#">List item (7)</a></li>
-                          <li><a href="#">List item (8)</a></li>
-                          <li><a href="#">List item (9)</a></li>
-                        </ul>
-                    {% endif %}
-                </div> <!-- left content -->
-            </div> <!-- left panel -->
-        {% endif %}
-
-        <div class="right-panel">
-        <div class="right-panel-in">
-        <div class="row">
-            <h2 class="title"><span>
-                {% if text %}
-                    {{ text | safe }}
-                {% endif %}
-            </span></h2>
-            <div class="row2">
-                {% block content %}
-                {% endblock %}
-            </div>
         </div>
-        </div> <!-- right panel in-->
-        </div> <!-- right panel -->
-        </div> <!-- content in-->
-        </div> <!-- content -->
+        <!-- header -->
+
+        {% block content %}
+        {% endblock %}
 
         <div class="footer">
             {% include 'footer.html' %}
-        </div> <!-- footer -->
-        </div> <!-- page -->
-        </div> <!-- main -->
-    </body>
+        </div>
+        <!-- footer -->
+    </div>
+    <!-- page -->
+</div>
+<!-- main -->
+</body>
 </html>

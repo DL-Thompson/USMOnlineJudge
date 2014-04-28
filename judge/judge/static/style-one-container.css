@@ -10,7 +10,8 @@
 
 }
 .right-panel-in {
-	width: 698px;
+	/*width: 698px;*/
+    width: 100%;
 	float: left;
 	padding-bottom: 16px;
 }
@@ -28,6 +29,7 @@
     color: #e0e0e0;
 	height: 30px;
 	padding-left: 34px;
+    text-align: center;
 }
 .title span {
 	padding-right: 5px;
@@ -80,4 +82,46 @@ a.more2 {
 }
 a.more2:hover {
 	text-decoration: none;
+}
+
+.row2_login {
+    clear: both;
+	padding: 14px 35px 55px 44px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row_login {
+    clear: both;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.right-panel-in_login {
+	width: 100%;
+	float: left;
+	padding-bottom: 16px;
+}
+
+.row_login a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.row_login a:hover {
+    color: #E8BF19;
+}
+
+#stat_table {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+}
+
+#stat_table table, th, td {
+    border: 1px solid #e0e0e0;
+    margin: 2px;
+    padding: 2px;
 }

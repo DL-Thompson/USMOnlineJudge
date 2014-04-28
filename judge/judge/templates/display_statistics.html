@@ -1,35 +1,33 @@
-    <div id="stat_table">
-        <p>Values displayed are from your last attempt at the exercise.</p>
-        <br>
+<div id="stat_table">
+    <p>Values displayed are from your last attempt at the exercise.</p>
+    <br>
+    <table>
+        <tr>
+            <td>Exercise Number</td>
+            <td>Memory Usage</td>
+            <td>Time Usage</td>
+            <td>Number of Attempts</td>
+            <td>Last Attempt</td>
+            <td>Last Success</td>
+        </tr>
         {% if statistics %}
-            {% for s in statistics %}
-                <table>
-                    <tr>
-                        <td>Exercise Number</td>
-                        <td>{{s.exercise_id}}</td>
-                    </tr>
-                    <tr>
-                        <td>Time Usage</td>
-                        <td>{{s.time}}</td>
-                    </tr>
-                    <tr>
-                        <td>Number of Attempts</td>
-                        <td>{{s.attempts}}</td>
-                    </tr>
-                    <tr>
-                        <td>Last attempt</td>
-                        <td>{{s.passed}}</td>
-                    </tr>
-                    <td>Last success</td>
-                        {% set filename = s.exercise_id %}
-                        {% set filename = filename ~ "-" %}
-                        {% set filename = filename ~ user_id %}
-                        {% set filename = filename ~ ".cpp" %}
+        {% for s in statistics %}
+        <tr>
+            <td>{{s.exercise_id}}</td>
+            <td>{{s.memory}}</td>
+            <td>{{s.time}}</td>
+            <td>{{s.attempts}}</td>
+            <td>{{s.passed}}</td>
 
-                    <td><a href="{{url_for('source_code', filename=filename)}}" target="_blank">Exercise {{s.exercise_id}}</a></td>
-                </table>
-            {% endfor %}
-        {% else %}
-            No statistics found for your account.
+            {% set filename = s.exercise_id %}
+            {% set filename = filename ~ "-" %}
+            {% set filename = filename ~ user_id %}
+            {% set filename = filename ~ ".cpp" %}
+
+            <td><a href="{{url_for('source_code', filename=filename)}}" target="_blank">Exercise {{s.exercise_id}}</a>
+            </td>
+        </tr>
+        {% endfor %}
         {% endif %}
-    </div>
+    </table>
+</div>

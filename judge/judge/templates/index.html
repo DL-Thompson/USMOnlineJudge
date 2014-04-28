@@ -2,6 +2,31 @@
 
 {% block content %}
 
+<div class="content">
+    <div class="content-in">
 
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-one-container.css') }}">
+
+
+        <div class="right-panel">
+            <div class="right-panel-in">
+                <div class="row">
+                    <h2 class="title"><span>
+                {% if text %}
+                    {{ text | safe }}
+                {% endif %}
+            </span></h2>
+
+                    <div class="row2">
+
+                    </div>
+                </div>
+            </div>
+            <!-- right panel in-->
+        </div>
+        <!-- right panel -->
+    </div>
+    <!-- content in-->
+</div> <!-- content -->
 
 {% endblock %}

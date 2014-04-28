@@ -8,19 +8,21 @@
                 <li style="border-left: medium none;"><a href="{{ url_for('index') }}">Home</a></li>
                 <li><a href="{{ url_for('exercises') }}">Exercises</a></li>
                 <!-- search -->
-                <li><form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">
+                <li>
+                    <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">
                         {{g.search_form.search(size=20)}}
                         <input type="submit" value="User Search">
-                    </form></li>
+                    </form>
+                </li>
                 <!-- only visible when logged in -->
                 {% if current_user.is_authenticated() == True %}
-                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                    <li><a href="{{ url_for('statistics')}}">Statistics</a></li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('statistics')}}">Statistics</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% endif %}
                 <!-- only visible when logged out -->
                 {% if current_user.is_authenticated() == False %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
             </ul>
         </div>

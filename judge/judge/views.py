@@ -57,7 +57,8 @@ def display_exercise(ex_id=None):
                 session['fn'] = filename
                 return redirect(url_for('display_results', ex_id=ex_id))
     exercise = db_queries.get_exercise(ex_id)
-    return render_template("exercise.html", exercise=exercise)
+    exercise_list = db_queries.get_exercise_list()
+    return render_template("exercise.html", exercise=exercise, leftPanelContent=exercise_list)
 
 
 @app.route('/exercise/<ex_id>/results')
@@ -127,15 +128,15 @@ def profile():
             db_posts.update_profile(form, current_user.primary_email)
             text = db_queries.get_page_content('profile')
             profile = db_queries.get_profile(current_user.primary_email)
-            return render_template("my_profile.html", text=text, profile=profile, form=form)
+            return render_template("my_profile.html", text=text, profile=profile, form=form, leftProfileContent=profile)
         else:
             profile = db_queries.get_profile(current_user.primary_email)
-            return render_template("my_profile.html", text=text, profile=profile, form=form)
+            return render_template("my_profile.html", text=text, profile=profile, form=form, leftProfileContent=profile)
 
     #sends the user to the profile/edit profile page for GET methods
     profile = db_queries.get_profile(current_user.primary_email)
     form = ProfileForm(obj=profile)
-    return render_template("my_profile.html", text=text, profile=profile, form=form)
+    return render_template("my_profile.html", text=text, profile=profile, form=form, leftProfileContent=profile)
 
 
 @app.route('/display_profile/<profile_id>')

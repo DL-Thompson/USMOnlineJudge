@@ -84,7 +84,6 @@ a.more:hover {
 	float: right;
 	padding-top: 16px;
     color: #e0e0e0;
-
 }
 .right-panel-in {
 	width: 698px;
@@ -104,6 +103,7 @@ a.more:hover {
 	color: #e0e0e0;
 	height: 30px;
 	padding-left: 34px;
+    text-align: center;
 }
 .title span {
 	padding-right: 5px;
@@ -156,4 +156,75 @@ a.more2 {
 }
 a.more2:hover {
 	text-decoration: none;
+}
+
+#editor {
+    background-color: #303030;
+    border-radius: 15px;
+	width: 989px;
+	float: right;
+	padding-top: 16px;
+    color: #e0e0e0;
+    margin: 20px;
+}
+
+#editor #submit {
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25px;
+    margin-top: 0px;
+}
+
+.left-panel_profile {
+	width: 470px;
+	float: left;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.left-panel_profile h2 {
+	/*font-size: 22px;*/
+    font-size: 1.08em;
+	line-height: 48px;
+    /*letter-spacing: 2px;*/
+	color: #f1f1f1;
+    background-color: #303030;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+	/*height: 48px;*/
+	padding-left: 20px;
+}
+
+.right-panel_profile {
+	background-color: #303030;
+    border-radius: 15px;
+	width: 470px;
+	float: right;
+	padding-top: 16px;
+    color: #e0e0e0;
+    padding-left: auto;
+    padding-right: auto;
+}
+
+.row_profile {
+	clear: both;
+}
+
+.row2_profile {
+	clear: both;
+	padding-left: 65px;
+}
+
+#profile_form #submit {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.right-panel-in_profile {
+	width: 470px;
+	float: left;
+	padding-bottom: 16px;
 }

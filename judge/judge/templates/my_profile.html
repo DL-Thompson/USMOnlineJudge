@@ -2,64 +2,113 @@
 
 {% block content %}
 
-    {% with profile=profile %}
-        {% include "display_profile.html" %}
-        <br>
-        <a href="#" onclick="confirm_delete()">Delete Account</a>
-    {% endwith %}
+<div class="content">
+    <div class="content-in">
 
-    <div id="profile_form">
-        <form action="" method="post" action="/change_profile">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-two-containers.css') }}">
 
-                <p>
-                    Make Profile Public: {{form.show_public}} <br>
-                    {% for error in form.errors.show_public %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
 
-                    Name: {{form.full_name(size=50)}}<br>
-                    {% for error in form.errors.full_name %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
+        {% if leftProfileContent %}
+        <div class="left-panel_profile">
+            <h2>Choose</h2>
 
-                    Public Email: {{form.public_email(size=50)}}<br>
-                    {% for error in form.errors.public_email %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
+            <div class="left-content">
+                {% if leftProfileContent %}
+                <ul>
+                    {% with profile=profile %}
+                    {% include "display_profile.html" %}
+                    <br>
+                    <a href="#" onclick="confirm_delete()">Delete Account</a>
+                    {% endwith %}
+                </ul>
+                {% endif %}
+            </div>
+            <!-- left content -->
+        </div>
+        <!-- left panel -->
+        {% endif %}
 
-                    Location: {{form.location(size=50)}}<br>
-                    {% for error in form.errors.location %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
+        <div class="right-panel_profile">
+            <div class="right-panel-in_profile">
+                <div class="row_profile">
+                    <h2 class="title"><span>
+                {% if text %}
+                    {{ text | safe }}
+                {% endif %}
+            </span></h2>
 
-                    Homepage: {{form.homepage(size=50)}}<br>
-                    {% for error in form.errors.homepage %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
+                    <div class="row2_profile">
+                        <br>
 
-                    Company: {{form.company(size=50)}}<br>
-                    {% for error in form.errors.company %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
+                        <div id="content">
+                            <div id="profile_form">
+                                <form action="" method="post" action="/change_profile">
 
-                    School: {{form.school(size=50)}}<br>
-                    {% for error in form.errors.school %}
-                        <p class="form_error">[{{error}}]</p>
-                    {% endfor %}
-                </p>
+                                    <p>
+                                        Make Profile Public: {{form.show_public}} <br>
+                                        {% for error in form.errors.show_public %}
 
-            <input type="submit" value="Update Profile">
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
 
-        </form>
+                                    Name:<br> {{form.full_name(size=50)}}<br>
+                                    {% for error in form.errors.full_name %}
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
+
+                                    Public Email:<br> {{form.public_email(size=50)}}<br>
+                                    {% for error in form.errors.public_email %}
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
+
+                                    Location:<br> {{form.location(size=50)}}<br>
+                                    {% for error in form.errors.location %}
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
+
+                                    Homepage:<br> {{form.homepage(size=50)}}<br>
+                                    {% for error in form.errors.homepage %}
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
+
+                                    Company:<br> {{form.company(size=50)}}<br>
+                                    {% for error in form.errors.company %}
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
+
+                                    School:<br> {{form.school(size=50)}}<br>
+                                    {% for error in form.errors.school %}
+                                    <p class="form_error">[{{error}}]</p>
+                                    {% endfor %}
+                                    </p>
+                                    <div id="submit">
+                                        <input type="submit" align="center" value="Update Profile">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- right panel in-->
+        </div>
+        <!-- right panel -->
     </div>
+    <!-- content in-->
+</div> <!-- content -->
+
+
+<!--{% with profile=profile %}-->
+<!--{% include "display_profile.html" %}-->
+<!--<br>-->
+<!--<a href="#" onclick="confirm_delete()">Delete Account</a>-->
+<!--{% endwith %}-->
 
 
 <script>
-    function confirm_delete()
-    {
+    function confirm_delete() {
         var confirm = prompt("Please type \t'delete'\t to confirm.");
-        if (confirm == "delete")
-        {
+        if (confirm == "delete") {
             window.location.href = "{{url_for('delete_profile')}}";
         }
     }

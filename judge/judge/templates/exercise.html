@@ -2,29 +2,98 @@
 
 {% block content %}
 
-    {{exercise.title}}<br>
+<div class="content">
+    <div class="content-in">
 
-    <div id="">
-    {{ exercise.content | safe }}
+        <!-- PICKING THE CSS FOR TWO PANEL OR ONE PANEL DEPENDING ON IF leftPanelContent WAS SUPPLIED -->
+        {% if leftPanelContent %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-two-containers.css') }}">
+        {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-one-container.css') }}">
+        {% endif %}
+
+        {% if leftPanelContent %}
+        <div class="left-panel">
+            <h2>Choose</h2>
+
+            <div class="left-content">
+                {% if leftPanelContent %}
+                <ul>
+                    {% for l in leftPanelContent %}
+                    <li><a href=" {{ url_for('display_exercise', ex_id=l.id)}} "> {{l.title}}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <!-- left content -->
+        </div>
+        <!-- left panel -->
+        {% endif %}
+
+        <div class="right-panel">
+            <div class="right-panel-in">
+                <div class="row">
+                    <h2 class="title"><span>
+                {% if text %}
+                    {{ text | safe }}
+                {% endif %}
+            </span></h2>
+
+                    <div class="row2">
+                        {{exercise.title}}<br>
+
+                        <div id="content">
+                            {{ exercise.content | safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- right panel in-->
+        </div>
+        <!-- right panel -->
     </div>
+    <!-- content in-->
+</div> <!-- content -->
 
-    <style>
-        #file { visibility: hidden; }
-        .CodeMirror { width: 75%; display: block; margin-left: auto; margin-right: auto; text-align: left; }
-        .codemirror-ui-button-frame { width: 75%; display: block; margin-left: auto; margin-right: auto;}
-        #upload { align: center; }
-    </style>
 
-    <div id="upload">
-        <form action="" method="post" enctype="multipart/form-data">
-            <input type="file" id="file" name="file">
-            <br>
-            <br>
-            {% with data=data %}
-                {% include "editor.html" %}
-            {% endwith %}
-            <br>
-            <input type="submit" id="submit" name="submit" value="Submit Code">
-        </form>
-    </div>
+<style>
+    #file {
+        visibility: hidden;
+    }
+
+    .CodeMirror {
+        width: 75%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+    }
+
+    .codemirror-ui-button-frame {
+        width: 75%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #upload {
+        align: center;
+    }
+</style>
+
+<div id="editor">
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="file" id="file" name="file">
+        <br>
+        <br>
+        {% with data=data %}
+        {% include "editor.html" %}
+        {% endwith %}
+        <br>
+
+        <div id="submit">
+            <input type="submit" name="submit" align="center" value="Submit Code">
+        </div>
+    </form>
+</div>
 {% endblock %}
