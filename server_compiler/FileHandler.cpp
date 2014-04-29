@@ -8,6 +8,7 @@
 #include "FileHandler.h"
 #include "PreScan.h"
 #include "OutputChecker.h"
+#include "Timer.h"
 
 #include <stdio.h>
 #include <fstream>
@@ -16,10 +17,8 @@
 #include <sys/types.h>
 #include <sys/sysinfo.h>
 #include <sstream>
-#include <unistd.h>	//sleep
-//#include <ctime>	//clock
-#include <time.h>
-#include <sys/time.h> //gettimeofday
+#include <sys/types.h>
+#include <dirent.h>
 
 namespace judge_compiler {
 
@@ -97,11 +96,12 @@ void* runFile(void* arguments)
 
 // ***CLASS FUNCTIONS*** //
 
-FileHandler::FileHandler(std::string sourceDir, std::string destDir, std::string checkDir, std::string storageDir)
+FileHandler::FileHandler(std::string sourceDir, std::string destDir, std::string checkDir, std::string inputDir, std::string storageDir)
 {
 	m_sourceDir = sourceDir;
 	m_destDir = destDir;
 	m_checkDir = checkDir;
+	m_inputDir = inputDir;
 	m_storageDir = storageDir;
 	m_runningTime = 0;
 	m_memoryUsage = 0;
@@ -111,12 +111,13 @@ FileHandler::~FileHandler()
 {
 }
 
-void FileHandler::setDirectories(std::string sourceDir, std::string destDir, std::string checkDir, std::string storageDir)
+void FileHandler::setDirectories(std::string sourceDir, std::string destDir, std::string checkDir, std::string inputDir, std::string storageDir)
 {
 	m_sourceDir = sourceDir;
 	m_destDir = destDir;
 	m_checkDir = checkDir;
 	m_storageDir = storageDir;
+	m_inputDir = inputDir;
 }
 
 void FileHandler::addFiles(std::vector<std::string>& files)
@@ -171,7 +172,7 @@ void FileHandler::run()
 	*/
 
 	PreScan scanner;
-	FileHandler fh(m_sourceDir, m_destDir);
+	//FileHandler fh(m_sourceDir, m_destDir);
 
 	for(size_t f = 0; f < m_fileProcessList.size(); f++)
 	{
@@ -184,34 +185,33 @@ void FileHandler::run()
 		if (!scanner.isClean(file))
 		{
 			// save error report
-			if (!fh.saveResult("error-pre-scan", file))
+			if (!saveResult("error-pre-scan", file))
 				std::cerr << "Error saving file\n";
 		}
 		else
 		{
 			// compile
-			std::string executable = fh.compile(file);
+			std::string executable = compile(file);
 
 			std::string result;
 
 			if (executable.find("error:", 0) == std::string::npos)
 			{
 				// run and get result
-				result = fh.execute(executable);
+				result = execute(executable, exID);
 
 				// check result to answer
 				/*
 				 * if output is OK, save submitted file to permanent storage with time and mem tags to filename
 				 */
+
 				OutputChecker checker(m_checkDir);
 				if (checker.isMatch(result, exID))
 				{
-					std::cout << "CORRECT\n";
 					saveCorrect(file);
 				}
 				else
 				{
-					std::cout << "Incorrect Match\n";
 					result = "incorrect";
 				}
 
@@ -223,11 +223,11 @@ void FileHandler::run()
 			}
 
 			// save result
-			if (!fh.saveResult(result, file))
+			if (!saveResult(result, file))
 				std::cerr << "Error saving file\n";
 
 			// remove file from queue and executable
-			if (!fh.clean(file, executable))
+			if (!cleanDirectories(file, executable))
 				std::cerr << "Error cleaning files\n";
 
 		}
@@ -264,39 +264,42 @@ std::string FileHandler::compile(std::string file)
 	return obj;
 }
 
-std::string FileHandler::execute(std::string executableName)
+std::string FileHandler::execute(std::string executableName, double exID)
 {
 	std::string dir = m_sourceDir;
 	std::string command = dir + executableName;
+
+	if (isInputFile(exID))
+	{
+		// append command with inputFile
+		std::stringstream ss;
+		std::string s;
+		ss << exID;
+		ss >> s;
+		std::string inputFilePath = " " + m_inputDir + s + ".input";
+		command += inputFilePath;
+	}
 
 	FILE *in;
 	char buff[256];
 
 	// start checking the time
-	clock_t start = clock();
-
-	// start checking the memory
-	/* not implemented */
+	Timer timer;
 
 	//run it
 	if (! (in = popen(command.c_str(), "r") )) {
 		return "-1";
 	}
 
-	// check end time	
-	clock_t end = clock();
-
-	m_runningTime = (double)end - (double)start;
-	
-	
-	// check end memory
-	/* not implemented */
-
 	std::string result = "";
 	while(fgets(buff, sizeof(buff), in) != NULL) {
 		result += buff;
 	}
 	pclose(in);
+
+	int secondsPassed = timer.get_microseconds() * 1e-6;
+
+	m_runningTime = secondsPassed;
 
 	return result;
 }
@@ -367,7 +370,7 @@ bool FileHandler::saveCorrect(std::string origFileName)
 	return true;
 }
 
-bool FileHandler::clean(std::string origFileName, std::string executableName)
+bool FileHandler::cleanDirectories(std::string origFileName, std::string executableName)
 {
 	std::string filePath = m_sourceDir + origFileName;
 	std::string execPath = m_sourceDir + executableName;
@@ -391,7 +394,6 @@ double FileHandler::getExerciseID(std::string fileName)
 	std::string splitLeft;
 	size_t endPos = fileName.find('-');
 	splitLeft = fileName.substr(0, endPos);
-	std::cout << "exercise id = " << splitLeft << "\n";
 	std::stringstream ss;
 	ss << splitLeft;
 	ss >> id;
@@ -407,13 +409,38 @@ double FileHandler::getUserID(std::string fileName)
 	size_t startPos = fileName.find('-') + 1;
 	size_t endPos = fileName.size();
 	splitMiddle = fileName.substr(startPos, endPos);
-	std::cout << "user id = " << splitMiddle << "\n";
 	std::stringstream ss;
 	ss << splitMiddle;
 	ss >> id;
 
 	return id;
 
+}
+
+bool FileHandler::isInputFile(double exID)
+{
+	std::stringstream ss;
+	std::string ex_id;
+	ss << exID;
+	ss >> ex_id;
+
+	DIR *directory;
+
+	struct dirent *ep;
+	directory = opendir(m_inputDir.c_str());
+
+	if (directory != NULL) {
+		ep = readdir(directory);
+		while(ep)
+		{
+			std::string fileName = ep->d_name;
+			if (fileName.find(ex_id) != std::string::npos)
+				return true;
+			ep = readdir(directory);
+		}
+		(void) closedir (directory);
+	}
+	return false;
 }
 
 } /* namespace judge_compiler */

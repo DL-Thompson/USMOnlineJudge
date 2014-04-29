@@ -4,6 +4,7 @@ main_dir = '%s/Desktop/OnlineJudge/' % os.getenv("HOME")
 source = main_dir + 'submit/'
 dest = main_dir + 'result/'
 exCheck = main_dir + 'exCheck/'
+exInput = main_dir + 'exInput/'
 permanent = main_dir + 'storage/'
 
 
@@ -15,8 +16,10 @@ if not os.path.isdir(dest):
 	os.system('mkdir ' + dest)
 if not os.path.isdir(exCheck):
         os.system('mkdir ' + exCheck)
+if not os.path.isdir(exInput):
+		os.system('mkdir ' + exInput)
 if not os.path.isdir(permanent):
         os.system('mkdir ' + permanent)
 
 os.system('make')
-os.system('./compiler_controller -s %s -d %s -e %s -p %s' % (source, dest, exCheck, permanent))
+os.system('./compiler_controller -s %s -d %s -e %s -i %s -p %s' % (source, dest, exCheck, exInput, permanent))
