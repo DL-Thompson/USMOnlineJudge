@@ -24,6 +24,7 @@
                         {% endwith %}
                         <br><br><br>
                         {% with statistics=statistics %}
+                        {% set user_id=profile.profile_id%}
                         {% include "display_statistics.html" %}
                         {% endwith %}
                     </div>
