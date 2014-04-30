@@ -10,14 +10,23 @@
 
 <div id="profile_link">
     <ul>
+        {% if profile.full_name %}
         <li><b><a href="{{url_for('display_profile', profile_id=profile.profile_id)}}">{{profile.full_name}}</a></b>
         </li>
         |
-        <li><b>{{profile.public_email}} </b></li>
+        {% endif %}
+
+        {% if profile.public_email %}
+        <li><b><a href="{{url_for('display_profile', profile_id=profile.profile_id)}}">{{profile.public_email}} </a></b></li>
         |
-        <li><b>{{profile.location}} </b></li>
+        {% endif %}
+
+        {% if profile.location %}
+        <li><b><a href="{{url_for('display_profile', profile_id=profile.profile_id)}}">{{profile.location}} </a></b></li>
         |
-        <li><b>Joined:</b> {{profile.join_date}}</li>
+        {% endif %}
+
+        <li><b><a href="{{url_for('display_profile', profile_id=profile.profile_id)}}">Joined:</b> {{profile.join_date}}</a></li>
     </ul>
 </div>
 
