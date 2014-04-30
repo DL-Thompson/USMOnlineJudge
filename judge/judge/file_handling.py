@@ -3,7 +3,7 @@ from judge import app
 import time
 
 
-SUCCESS_MESSAGE = "Congratulations! (sp?) Your code passed our tests in ways that make us happy!"
+SUCCESS_MESSAGE = "Congratulations! Your code passed our tests in ways that make us happy!"
 INCORRECT_MESSAGE = "We're sorry, your princess is in another realm of time and space's castle. In other words, nope."
 
 error = '-error'

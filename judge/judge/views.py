@@ -85,8 +85,7 @@ def display_results(ex_id=None):
     list = []
     list.append(results['message'])
     if file_handling.SUCCESS_MESSAGE in results.values():
-        list.append("Your program ran in " + str(time) + " s/ms/?")
-        list.append("Your program used " + str(memory) + " b/kb/?")
+        list.append("Your program took " + str(time) + " seconds to complete.")
     elif file_handling.INCORRECT_MESSAGE in results.values():
         pass
     else:

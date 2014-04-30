@@ -2,11 +2,44 @@
 
 {% block content %}
 
-<div id="submission-results">
-    {% if results %}
+<div class="content">
+    <div class="content-in">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-one-container.css') }}">
+
+
+        <div class="right-panel">
+            <div class="right-panel-in_login">
+                <div class="row_login">
+                    <h2 class="title"><span>
+                {% if text %}
+                    {{ text | safe }}
+                {% endif %}
+            </span></h2>
+
+                    <div class="row2_login">
+
+                        {% if results %}
     {% for r in results %}
-    {{ r }} <br>
+    {{ r }} <br><br>
     {% endfor %}
     {% endif %}
-</div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- right panel in-->
+        </div>
+        <!-- right panel -->
+    </div>
+    <!-- content in-->
+</div> <!-- content -->
+
+<!--<div id="submission-results">-->
+    <!--{% if results %}-->
+    <!--{% for r in results %}-->
+    <!--{{ r }} <br>-->
+    <!--{% endfor %}-->
+    <!--{% endif %}-->
+<!--</div>-->
 {% endblock %}
