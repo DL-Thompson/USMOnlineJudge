@@ -34,13 +34,13 @@
             <div class="right-panel-in">
                 <div class="row">
                     <h2 class="title"><span>
-                {% if text %}
-                    {{ text | safe }}
-                {% endif %}
+                Click on an exercise to the left to get started.
             </span></h2>
 
                     <div class="row2">
-                        Choose an exercise to the left
+                        {% if text %}
+                        {{ text | safe }}
+                        {% endif %}
                     </div>
                 </div>
             </div>
